@@ -1,0 +1,7 @@
+requests
+bs4
+sys
+time
+math
+urllib.parse
+
