@@ -1,0 +1,7 @@
+
+```
+a'||'d'||'m'||'i'||'n
+a' IS NOT 'password
+```
+
+picoCTF{0n3_m0r3_t1m3_838ec9084e6e0a65e4632329e7abc585}
