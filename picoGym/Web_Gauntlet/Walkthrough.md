@@ -4,31 +4,27 @@
 <br />
 <br />
 
-## Setup
+### Author: MADSTACKS <br />
 
-**Author:** MADSTACKS <br />
-<br />
-**Point Value:** 200<br />
 
-**Description:** Can you beat the filters? Log in as admin.<br />
+### Description:
+```
+Can you beat the filters? Log in as admin.
 http://jupiter.challenges.picoctf.org:29164/ http://jupiter.challenges.picoctf.org:29164/filter.php
-<br />
+```
 
-**Hint 1:** You are not allowed to login with valid credentials.
+### Hints:
+    * You are not allowed to login with valid credentials.
+    * Write down the injections you use in case you lose your progress.
+    * For some filters it may be hard to see the characters, always (always) look at the raw hex in the response.
+    * sqlite
+    * If your cookie keeps getting reset, try using a private browser window
 
-**Hint 2:** Write down the injections you use in case you lose your progress.
-
-**Hint 3:** For some filters it may be hard to see the characters, always (always) look at the raw hex in the response.
-
-**Hint 4:** sqlite
-
-**Hint 5:** If your cookie keeps getting reset, try using a private browser window
-
-## Setup
+### Setup
 From the hints we can see that this will be a sql injection challenge. The author specified that we will need to use sqlite syntax, so we will need to be aware of any quirks this version may have(hint: it comes in handy later)
 
-## Step 1
-## OR is filtered out.
+### Step 1
+### OR is filtered out.
 
 I need to find out if this sql uses a single quotes or double quotes. Lets try ' and ' for username and password. <br />
 
@@ -51,8 +47,8 @@ as our injection for the username and "a" for our password(The password really d
 
 *BAM!* Level 2. Our injection set the username to admin, but we closed the username field with the ' after the "n" in admin. Then using the -- we commented out the "AND password=" field, bypassing it completely.
 
-## Step 2
-## OR AND LIKE = -- filtered out
+### Step 2
+### OR AND LIKE = -- filtered out
 
 We have less injection methods in this part, but this injection will be similar to the first in that we will use sql comments to bypass the password. In the injection we will use a block comment.
 
@@ -62,13 +58,13 @@ We have less injection methods in this part, but this injection will be similar 
 
 Again, I will set my password to "a" because it really doesn't matter. Onto level 3!
 
-## Step 3
-## OR AND = LIKE > < -- filtered out
+### Step 3
+### OR AND = LIKE > < -- filtered out
 
 This step removes more potential tools, but it doesn't remove anything that we used in the last step. The same injection allows us to proceed to level 4.
 
-## Step 4
-## OR AND = LIKE > < -- admin filtered out
+### Step 4
+### OR AND = LIKE > < -- admin filtered out
 
 This step gets very interesting, we can't use the word 'admin' any more. Here is where knowledge of sqlite comes in. The || operator is the concatenation operator in sqlite, which is super weird to me. Anyways, the | character isn't filtered out, so we can use this injection to win the level.
 
@@ -79,8 +75,8 @@ a'||'d'||'m'||'i'||'n'/*
 
 We concatenated all of the characters for the word 'admin' which the filter reads individually. Sqlite evaluates the expression to concatenate the characters into 'admin' then evaluates the sql expression. Onto the last level. 
 
-## Step 5
-## OR AND = LIKE > < -- UNION ADMIN filtered out
+### Step 5
+### OR AND = LIKE > < -- UNION ADMIN filtered out
 With even less tools at out disposal, notice how no character from our last injection is filtered out. We can reuse it and win the challenge. <br />
 
 When we win, we get to a screen that says "Congrats! You won! Check out filter.php" <br />
