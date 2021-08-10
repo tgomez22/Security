@@ -1,16 +1,13 @@
 **Tristan Gomez**
 
 # Who Are You?
-<br />
-<br />
 
-## Setup
+### Setup
 
-**Author:** MADSTACKS <br />
-<br />
-**Point Value:** 100<br />
+### Author: MADSTACKS 
 
-**Description:** Let me in. Let me iiiiiiinnnnnnnnnnnnnnnnnnnn<br />
+
+Description:** Let me in. Let me iiiiiiinnnnnnnnnnnnnnnnnnnn<br />
 http://mercury.picoctf.net:52362/
 <br />
 
