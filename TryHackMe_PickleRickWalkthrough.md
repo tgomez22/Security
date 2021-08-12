@@ -1,4 +1,4 @@
-** Tristan Gomez **
+**Tristan Gomez**
 
 # Pickle Rick
 
