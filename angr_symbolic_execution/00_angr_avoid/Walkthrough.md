@@ -1,3 +1,9 @@
+**Tristan Gomez**
+
+# Angr: 00_angr_avoid
+
+This level bagan with a code scaffold that is identical to solve00.py except for the scaffold was missing `3` inputs. It was missing the values for `path_to_binary, print_good_address, and will_not_succeed_address`.
+
 ```
 WARNING | 2021-08-16 14:18:41,704 | angr.storage.memory_mixins.default_filler_mixin | The program is accessing memory or registers with an unspecified value. This could indicate unwanted behavior.                                  
 WARNING | 2021-08-16 14:18:41,704 | angr.storage.memory_mixins.default_filler_mixin | angr will cope with this by generating an unconstrained symbolic variable and continuing. You can resolve this by:                              
