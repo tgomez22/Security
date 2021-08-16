@@ -1,0 +1,48 @@
+**InventoryManager.cs**
+
+This file contains an [Initialization Method](../-/blob/c9c0bb73c3a6d3407b39a80a30df4aea663ab604/MaliciousCode/InventoryManager.cs#L97-124) which is what "kicks-off" the main part of the *Sunburst* Malware.
+
+The method carries with it an [innocuous name](../-/blob/c9c0bb73c3a6d3407b39a80a30df4aea663ab604/MaliciousCode/InventoryManager.cs#L97) - *RefreshInternal()*, so it can hide in plain sight in the file, among other legitimate methods. This method lies within *SolarWinds.Orion.Core.BusinessLayer.BackgroundInventory* namespace which is logically different from the namespace containing the bulk of the malware's functionality, the *SolarWinds.Orion.Core.BusinessLayer* namespace.
+
+Notice these two examples of this malicious method performing legitimate actions in an attempt to hide in plain sight among the other methods in the file.
+
+1. Here is an example of the malware performing legitimate [logging](../-/blob/c9c0bb73c3a6d3407b39a80a30df4aea663ab604/MaliciousCode/InventoryManager.cs#L99-100) actions. <br />
+    * An [example](../-/blob/c9c0bb73c3a6d3407b39a80a30df4aea663ab604/MaliciousCode/InventoryManager.cs#L130) of legitimate logging activity.
+2. An [example](../-/blob/c9c0bb73c3a6d3407b39a80a30df4aea663ab604/MaliciousCode/InventoryManager.cs#L112-115) of the malware skipping a task because it would interfere with an already running process. <br />
+    * [Here](../-/blob/c9c0bb73c3a6d3407b39a80a30df4aea663ab604/MaliciousCode/InventoryManager.cs#L158) you can see a legitimate method performing a similar action with an almost identical syntax when it comes to the logging message.
+
+
+**Further analysis and other interesting lines:**
+
+1. Lines [41 & 51](https://gitlab.cecs.pdx.edu/gomez22/solarwinds-code-analysis/-/blob/master/MaliciousCode/InventoryManager.cs#L41)
+
+line 41:
+`foreach (IBackgroundInventoryPlugin ibackgroundInventoryPlugin in plugins2)`
+
+line 51:
+`foreach (IBackgroundInventoryPlugin2 inventoryPlugin2 in plugins3)`
+
+Something to note about these lines is that they use very similar variable names that differ only by number. This makes it very hard to differentiate between them. One could make a plugins9 and there would be no more or less information than there is now on what each one does or why there are so many of them. This is particularly important when someone is tasked at finding malicious code and has to sift through hundreds if not thousands of lines like these.
+
+2. [Line 60](https://gitlab.cecs.pdx.edu/gomez22/solarwinds-code-analysis/-/blob/master/MaliciousCode/InventoryManager.cs#L60)
+
+Additionally we can see some problematic code that rambles off the side of the page due to a reptitive naming scheme on Line 60:
+
+`this.backgroundInventory= new SolarWinds.Orion.Core.BusinessLayer.BackgroundInventory.BackgroundInventory(BusinessLayerSettings.Instance.BackgroundInventoryPa  |OFF PAGE|  rallelTasksCount, plugins1);`
+
+We can see that there is a lot of repetition of the words "Background", "Layer", "Inventory", and "Business". These are not necesary and bloat the line size, further reducing readability and making it easier for someone to hide malicious code off the end of a line, or at the very least, obscure it further.
+
+In general the whole section looks to be using interfaces or templates, however combining custom interfaces with long and arduous class names makes it very easy to obfuscate code. For example:
+
+3. [Line 48:](https://gitlab.cecs.pdx.edu/gomez22/solarwinds-code-analysis/-/blob/master/MaliciousCode/InventoryManager.cs#L60)
+
+`IEnumerable<IBackgroundInventoryPlugin2> plugins3 = (IEnumerable<IBackgroundInventoryPlugin2>) new PluginsFactory<IBackgroundInventoryPlugin2>().Plugins;`
+
+This is a “Ienumerable” interface with the “IBackgroundInventoryPlugin2” data type called plugins 3, which, rather than a new instance of its own previously stated datatype, is actually the “Plugins” member of the newly instantiated class because of the chaining at the end (...  ().Plugins; ), where the new object is actually a PluginsFactory object being casted as a IEnumerable type.
+
+In summary, plugins3 is the plugins member of a new PluginsFactory casted as an IEnumerable.
+
+Use of Generics helps reusability, but using it on literally everything severely hinders readability.
+
+
+
