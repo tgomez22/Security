@@ -153,6 +153,7 @@ to `0x0040082c` then we can examine the contents of `RDX` and `RAX` which should
 (gdb) 
 ``` 
 
+Now plug in the password to solve the challenge!
 
 ```
 ./crackme5                                                                                                     
