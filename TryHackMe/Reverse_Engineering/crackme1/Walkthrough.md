@@ -1,3 +1,5 @@
+This first crackme file will give you an introduction to if statements and basic function calling in assembly.
+HINT did you check the strings stored in the executable?
 ```
 /lib64/ld-linux-x86-64.so.2
 libc.so.6
