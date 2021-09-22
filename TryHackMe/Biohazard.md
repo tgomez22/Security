@@ -274,9 +274,130 @@ Barry
 ```
 
 steghide 001-key.jpg
-``
+`cGxhbnQ0Ml9jYW`
+
 
 strings 002-key.jpg
-``
+`5fYmVfZGVzdHJveV9`
 
 binwalk 003-key.jpg
+`3aXRoX3Zqb2x0`
+
+full key
+`cGxhbnQ0Ml9jYW5fYmVfZGVzdHJveV93aXRoX3Zqb2x0`
+base64 decoded
+
+`plant42_can_be_destroy_with_vjolt` is password to decrypt helmet_key.txt.gpg
+
+helmet key
+`helmet_key{458493193501d2b94bbab2e727f8db4b}`
+
+/hidden_closet open with helmet_key
+```
+The closet room lead to an underground cave
+
+In the cave, Jill met injured Enrico, the leader of the STARS Bravo team. He mentioned there is a traitor among the STARTS Alpha team.
+
+When he was about to tell the traitor name, suddenly, a gun shot can be heard and Enrico was shot dead.
+
+Jill somehow cannot figure out who did that. Also, Jill found a MO disk 1 and a wolf Medal
+
+Read the MO disk 1? READ
+
+Examine the wolf medal? EXAMINE
+```
+
+MO disk 1 -> `wpbwbxr wpkzg pltwnhro, txrks_xfqsxrd_bvv_fy_rvmexa_ajk`
+Vigenere cipher, key is `albert` -> `weasker login password, stars_members_are_my_guinea_pig`
+
+wolf_medal -> `SSH password: T_virus_rules`
+
+/study_room open with helmet_key
+```
+Jill saw a messy table upon enter the room
+
+After a short search, Jill managed to find a sealed book
+
+Examine the book? EXAMINE
+```
+
+book is `doom.tar.gz`. extract it to get eagle_metal.txt which contains 
+`SSH user: umbrella_guest`
+
+ftp `weasker:stars_members_are_my_guinea_pig`
+weasker_note.txt
+```
+Weaker: Finally, you are here, Jill.
+Jill: Weasker! stop it, You are destroying the  mankind.
+Weasker: Destroying the mankind? How about creating a 'new' mankind. A world, only the strong can survive.
+Jill: This is insane.
+Weasker: Let me show you the ultimate lifeform, the Tyrant.
+
+(Tyrant jump out and kill Weasker instantly)
+(Jill able to stun the tyrant will a few powerful magnum round)
+
+Alarm: Warning! warning! Self-detruct sequence has been activated. All personal, please evacuate immediately. (Repeat)
+Jill: Poor bastard
+```
+
+ssh `umbrella_guest:T_virus_rules`
+
+```
+umbrella_guest@umbrella_corp:~$ sudo -l
+[sudo] password for umbrella_guest: 
+Sorry, user umbrella_guest may not run sudo on umbrella_corp.
+```
+
+```
+umbrella_guest@umbrella_corp:~$ ls -a
+.   .bash_logout  .cache   .dmrc   .ICEauthority  .local    .ssh         .xsession-errors
+..  .bashrc       .config  .gnupg  .jailcell      .profile  .Xauthority
+
+```
+
+.jailcell/chris.txt
+```
+Jill: Chris, is that you?
+Chris: Jill, you finally come. I was locked in the Jail cell for a while. It seem that weasker is behind all this.
+Jil, What? Weasker? He is the traitor?
+Chris: Yes, Jill. Unfortunately, he play us like a damn fiddle.
+Jill: Let's get out of here first, I have contact brad for helicopter support.
+Chris: Thanks Jill, here, take this MO Disk 2 with you. It look like the key to decipher something.
+Jill: Alright, I will deal with him later.
+Chris: see ya.
+
+MO disk 2: albert 
+
+```
+
+```
+umbrella_guest@umbrella_corp:~$ su weasker
+Password: stars_members_are_my_guinea_pig
+weasker@umbrella_corp:/home/umbrella_guest$ 
+```
+
+```
+weasker@umbrella_corp:/home/umbrella_guest$ sudo -l
+[sudo] password for weasker: 
+Matching Defaults entries for weasker on umbrella_corp:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User weasker may run the following commands on umbrella_corp:
+    (ALL : ALL) ALL
+
+```
+
+run sudo su and cat root.txt
+```
+In the state of emergency, Jill, Barry and Chris are reaching the helipad and awaiting for the helicopter support.
+
+Suddenly, the Tyrant jump out from nowhere. After a tough fight, brad, throw a rocket launcher on the helipad. Without thinking twice, Jill pick up the launcher and fire at the Tyrant.
+
+The Tyrant shredded into pieces and the Mansion was blowed. The survivor able to escape with the helicopter and prepare for their next fight.
+
+The End
+
+flag: 3c5794a00dc56c35f2bf096571edf3bf
+
+```
