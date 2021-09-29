@@ -250,3 +250,21 @@ Also as you may know, the RCP-90 is vastly superior to any other weapon and Lice
 ```
 
 exiftool to look at `for-007.jpg` metadata. In it is `eFdpbnRlcjE5OTV4IQ==` which is base64 decoded to `xWinter1995x!`
+
+Now we can login to severnaya-station.com/gnocertdir as `admin:xWinter1995x!`.
+
+As the admin, we need to do some snooping around.
+
+
+
+
+
+
+Reverse shell
+
+```
+$ whoami
+whoami
+www-data
+```
+
