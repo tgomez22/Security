@@ -268,3 +268,27 @@ whoami
 www-data
 ```
 
+```
+# whoami
+whoami
+root
+```
+
+```
+# cd /root
+cd /root                                                                                                                                                                                                                                     
+# ls -a
+ls -a
+.  ..  .bash_history  .bashrc  .cache  .flag.txt  .profile  .rnd  .viminfo
+# cat .flag.txt
+cat .flag.txt
+Alec told me to place the codes here: 
+
+568628e0d993b1973adc718237da6e93
+
+If you captured this make sure to go here.....
+/006-final/xvf7-flag/
+
+# 
+
+```
