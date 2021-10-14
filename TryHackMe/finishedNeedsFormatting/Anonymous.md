@@ -1,6 +1,15 @@
 **Tristan Gomez**
 
-nmap
+# Anonymous
+```
+Try to get the two flags! 
+Root the machine and prove your understanding of the fundamentals! 
+This is a virtual machine meant for beginners. 
+Acquiring both flags will require some basic knowledge of Linux and privilege escalation methods.
+```
+
+
+I began the challenge with an nmap scan. 
 ```
 └─$ sudo nmap -Pn 10.10.33.63                                                                               
 Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
@@ -14,8 +23,13 @@ PORT    STATE SERVICE
 139/tcp open  netbios-ssn
 445/tcp open  microsoft-ds
 ```
+a) `Enumerate the machine.  How many ports are open?`
+* 4 ports are open
 
-anonymous ftp is allowed
+b) `What service is running on port 21?`
+* ftp
+
+Then I attempted anonymous ftp to see what I could find. 
 ```
 └─$ ftp
 ftp> open 10.10.33.63
@@ -28,13 +42,10 @@ Password:
 Remote system type is UNIX.
 ```
 
-Found
- * clean.sh
- * removed_files.log
- * to_do.txt
+In the ftp directory, I found clean.sh, removed_files.log, and to_do.txt.
 
-In to_do.txt
-`I really need to disable the anonymous login...it's really not safe`
+In to_do.txt was ...
+`I really need to disable the anonymous login...it's really not safe`. Well, this isn't super helpful. 
 
 
 smb map
