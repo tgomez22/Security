@@ -39,6 +39,8 @@ TypeError: Cannot read property 'replace' of undefined
     at /home/www/api/node_modules/cors/lib/index.js:224:17
 ```
 
+
+## Gaining a Foothold
 You can usually get an idea of what is running on the 'other-side' by
 injecting stuff and viewing the response. I am going to put in `'` and `"` to see if I get an error message.
 
@@ -61,6 +63,8 @@ Injecting `ls` gives us the name of the database being used `utech.db.sqlite`. L
 
 Now `john the ripper` to crack the password using `rockyou.txt` as wordlist yields `r00t:n100906` and `admin: mrsheafy`. The admin password appears to be incorrect, but the credentials for `r00t` are valid. Let's ssh in!
 
+
+## Privesc
 First thing that I like to do is check the sudo permissions for the user I login as. 
 ```
 r00t@ultratech-prod:~$ sudo -l
