@@ -68,3 +68,9 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ```
 
 `SG@anthem.com:UmbracoIsTheBest!`
+
+Hidden in C: is backup(dir). In backup is restore.txt that can't be read but we can change permissions. Add your user profile \SG and allow all. Open file to see `ChangeMeBaby1MoreTime`.
+
+Logout and log back in as `Administrator:ChangeMeBaby1MoreTime`
+
+On the Desktop in root.txt is `THM{Y0U_4R3_1337}`
