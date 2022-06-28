@@ -1,0 +1,53 @@
+nmap
+```
+└─$ sudo nmap -Pn -sV 10.10.38.79
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-06-28 15:04 PDT
+Nmap scan report for 10.10.38.79
+Host is up (0.16s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.4 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.48 ((Ubuntu))
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 67.85 seconds                           
+                                                              
+```
+
+http://10.10.38.79
+```
+<h2>About Us</h2>
+          <p>We are a group of young Hackers, Developers, Bug Hunters, Cyber Warriors, Cyber Gaurdians. We find vulnerabilities in the website legally and save them from getting hacked, Join our forces, find the vuln on our login page and login to join us. :D</p>
+          <br><h5>Heros are not born, They work hard and become one ! :D</h5>
+```
+
+http://10.10.38.79/login.html
+```
+<script>
+    function authenticate() {
+      a = document.getElementById('uname')
+      b = document.getElementById('pass')
+      const RevereString = str => [...str].reverse().join('');
+      if (a.value=="h3ck3rBoi" & b.value==RevereString("54321@terceSrepuS")) { 
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("flag").innerHTML = this.responseText ;
+            document.getElementById("todel").innerHTML = "";
+            document.getElementById("rm").remove() ;
+          }
+        };
+        xhttp.open("GET", "RandomLo0o0o0o0o0o0o0o0o0o0gpath12345_Flag_"+a.value+"_"+b.value+".txt", true);
+        xhttp.send();
+      }
+      else {
+        alert("Incorrect Password, try again.. you got this hacker !")
+      }
+    }
+  </script>
+```
+
+`h3ck3rBoi:SuperSecret@12345`
+
+flag: `flag{edb0be532c540b1a150c3a7e85d2466e}`
