@@ -143,3 +143,6 @@ HOP RTT       ADDRESS
 
 
 ```
+ 
+Icecast is vulnerable to VCVE-2004-1561 (code execution via overflow)
+Using metasploit i found `exploit/windows/http/icecast_header `
