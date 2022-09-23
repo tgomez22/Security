@@ -102,3 +102,10 @@ I can’t believe the movie based on my favorite book of all time is going to co
 
 After a quick wikipedia scan to find the main character's avatar name in Ready Player One, 
 I arrived at the creds `Wade:parzival`
+
+The next step was broken for me in this challenge. There was no web history to find on this box as the hint indicated there would be. Looking at other walk-throughs for this chellenge confirms that this part was broken for many users.
+
+I used a walkthrough to find the correct CVE which is `CVE-2019-1388`.
+
+I am super new to Windows hacking so I used this GitHub repo `https://github.com/nobodyatall648/CVE-2019-1388` and this walkthrough `https://thedarkcube.net/tryhackme-blaster/` to privesc to `nt authority\system`.
+
