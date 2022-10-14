@@ -39,4 +39,30 @@ Considerations about SSH keys:
 ## SSH Logging
 * log file is created anytimne someone logs in with a protocol that used SSH (SSH, SCP, SFTP,etc.)
 * By default this log is stored in `/var/log/auth.log`.
-* To increase log output go     
+* To increase log output go to `/etc/ssh/sshd_config` -> look for `#LogLevel INFO` -> change to `#LogLevel VERBOSE`.
+
+### Checking open/used ports from inside a machine.
+`sudo lsof -i -P -n | grep LISTEN`
+
+## Mandatory Access Control (MAC)
+* AppArmor comes preinstalled with Ubuntu.
+* SELinux does the same thing.
+
+Benefits of AppArmor:
+* It can prevent malicious actors from accessing the data on your systems. As a system administrator, this is extremely important; protecting the confidentiality of your data
+* Applications have their own profiles thus making it a little easier
+* SELinux and AppArmor have the capability to create your own custom profiles but the scripting in AppArmor is a little easier to understand and reduces the learning curve.
+
+### AppArmor Configuration 
+* `/etc/apparmor.d` -> contains all apparmor profiles. `sbin.dhclient` and `usr.*` are the profiles.
+* additional profiles can be installed with `sudo apt install apparmor-profiles apparmor-profiles-extra`
+
+### AppArmor Command-Line Utilities
+* To get the AppArmor status enter `aa-status`.
+
+AppArmor Modes:
+* Enforce - enforces active profiles
+* Complain - allows processes to perform disallowed actions by the profile and are logged.
+* Audit - The same as Enforce mode but allowed and disallowed actions get logged to `/var/log/audit/audit.log` or system log. 
+
+TO install AppArmor utilities for the command line run: `sudo apt install apparmor-utils`
