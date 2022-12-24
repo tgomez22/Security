@@ -29,3 +29,9 @@ daemon
 
 Pivoting (maybe)
 Privesc (privelege escalation)
+
+
+```
+daemon@4a70924bafa0:/tmp$ getcap -r / 2>/dev/null
+/usr/bin/python3.7 = cap_setuid+ep
+```
