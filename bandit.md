@@ -253,7 +253,7 @@ off to cyberchef!
 `The password is JVNBBFSmZwKKOP0XbFXOoW8chDz5yVRv`
 
 or alternate one liner from Julay
-``
+`tr 'A-Za-z' 'N-ZA-Mn-za-m' < data.txt`
 ## Bandit12
 ## Bandit13
 ## Bandit14
