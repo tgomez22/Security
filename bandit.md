@@ -320,3 +320,191 @@ fGrHPx402xGC7U7rXKDaxiWFTOiF0ENq
 Correct!
 jN2kgmIXJ6fShzhT2avhotn4Zcka6tnt
 ```
+
+## Bandit 15
+```
+bandit15@bandit:~$ openssl s_client localhost:30001 
+...
+read R BLOCK
+jN2kgmIXJ6fShzhT2avhotn4Zcka6tnt
+Correct!
+JQttfApK4SeyHwDlI9SXGR50qclOAil1
+closed
+```
+
+## Bandit 16
+`JQttfApK4SeyHwDlI9SXGR50qclOAil1`
+
+## Bandit 17
+```
+bandit16@bandit:~$ nmap -Pn -sV -p31000-32000 localhost
+PORT      STATE SERVICE     VERSION
+31046/tcp open  echo
+31518/tcp open  ssl/echo
+31691/tcp open  echo
+31790/tcp open  ssl/unknown
+31960/tcp open  echo
+```
+
+```
+bandit16@bandit:~$ openssl s_client localhost:31790
+CONNECTED(00000003)
+...
+read R BLOCK
+JQttfApK4SeyHwDlI9SXGR50qclOAil1
+Correct!
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
+imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ
+Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu
+DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW
+JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX
+x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD
+KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl
+J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd
+d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC
+YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A
+vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama
++TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT
+8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx
+SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd
+HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt
+SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A
+R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi
+Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg
+R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu
+L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni
+blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU
+YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM
+77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b
+dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3
+vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY=
+-----END RSA PRIVATE KEY-----
+
+closed
+```
+
+## Bandit 18 
+```
+bandit17@bandit:~$ ls
+passwords.new  passwords.old
+bandit17@bandit:~$ cat * | diff *
+42c42
+< hga5tuuCLF6fFzUpnagiMN8ssu9LFrdg
+---
+> U79zsNCl1urwJ5rU6pg7ZSCi7ifWOWpT
+```
+
+
+## Bandit 19
+
+Found these commands on stack overflow @ `https://unix.stackexchange.com/questions/98698/ssh-parameter-to-ignore-bashrc-script`
+
+```
+└─$ ssh bandit18@bandit.labs.overthewire.org -p 2220 "bash --norc"
+                         _                     _ _ _
+                        | |__   __ _ _ __   __| (_) |_
+                        | '_ \ / _` | '_ \ / _` | | __|
+                        | |_) | (_| | | | | (_| | | |_
+                        |_.__/ \__,_|_| |_|\__,_|_|\__|
+
+
+                      This is an OverTheWire game server.
+            More information on http://www.overthewire.org/wargames
+
+Load key "/home/gomez22/.ssh/id_rsa": Is a directory
+bandit18@bandit.labs.overthewire.org's password:
+ls
+readme
+cat readme
+awhqfNnAbc1naukrpqDYcF95h7HoMTrC
+```
+
+`ssh bandit18@bandit.labs.overthewire.org -p 2220 /bin/dash`
+
+## Bandit 20
+```
+bandit19@bandit:~$ ./*do cat /etc/bandit_pass/bandit20
+VxCazJaVykI6W36BkBU0mJTCM8rR95XT
+```
+
+## Bandit 21
+consulted this walkthrough `https://medium.com/secttp/overthewire-bandit-level-20-a1af9a042c56`
+
+0. Open two terminal windows on this machine.
+1. In one terminal, Start the netcat listener first on any port not currently in use.
+2. On the other terminal, run `./suconnect <portnumber>`
+3. On the netcat listener, paste in and enter the password from the previous level.
+4. You should see output(see below) from `suconnect` saying it read the correct password.
+5. You should see output(see below) showing a received password from the nc window.
+```
+bandit20@bandit:~$ nc -nvlp 4444
+Listening on 0.0.0.0 4444
+Connection received on 127.0.0.1 38080
+VxCazJaVykI6W36BkBU0mJTCM8rR95XT
+NvEJF7oVjkddltPSrdKEFOllh9V1IBcq
+
+bandit20@bandit:~$ ./suconnect 4444
+Read: VxCazJaVykI6W36BkBU0mJTCM8rR95XT
+Password matches, sending next password
+```
+
+## Bandit 21
+```
+bandit21@bandit:~$ cd /etc/cron.d
+bandit21@bandit:/etc/cron.d$ ls
+cronjob_bandit15_root  cronjob_bandit23       e2scrub_all
+cronjob_bandit17_root  cronjob_bandit24       otw-tmp-dir
+cronjob_bandit22       cronjob_bandit25_root  sysstat
+...
+bandit21@bandit:/etc/cron.d$ cat cronjob_bandit22
+@reboot bandit22 /usr/bin/cronjob_bandit22.sh &> /dev/null
+* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &> /dev/null
+```
+
+```
+bandit21@bandit:/etc/cron.d$ cd /usr/bin
+bandit21@bandit:/usr/bin$ ls -la | grep cronjob
+-rwx------  1 root     root          142 Dec  3 08:13 cronjob_bandit15_root.sh
+-rwx------  1 root     root          443 Dec  3 08:13 cronjob_bandit17_root.sh
+-rwxr-x---  1 bandit22 bandit21      130 Dec  3 08:14 cronjob_bandit22.sh
+-rwxr-x---  1 bandit23 bandit22      211 Dec  3 08:14 cronjob_bandit23.sh
+-rwxr-x---  1 bandit24 bandit23      384 Dec  3 08:14 cronjob_bandit24.sh
+-rwx------  1 root     root          497 Dec  3 08:14 cronjob_bandit25_root.sh
+...
+```
+
+```
+bandit21@bandit:/usr/bin$ cat cronjob_bandit22.sh
+#!/bin/bash
+chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+cat /etc/bandit_pass/bandit22 > /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+bandit21@bandit:~$ cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+WdDozAdTM2z9DiFEQ2mGlwngMfj4EZff
+```
+
+## Bandit 22
+```
+bandit22@bandit:~$ cd /etc/cron.d
+bandit22@bandit:/etc/cron.d$ ls
+cronjob_bandit15_root  cronjob_bandit23       e2scrub_all
+cronjob_bandit17_root  cronjob_bandit24       otw-tmp-dir
+cronjob_bandit22       cronjob_bandit25_root  sysstat
+bandit22@bandit:/etc/cron.d$ cat cronjob_bandit23
+@reboot bandit23 /usr/bin/cronjob_bandit23.sh  &> /dev/null
+* * * * * bandit23 /usr/bin/cronjob_bandit23.sh  &> /dev/null
+bandit22@bandit:/etc/cron.d$  cat /usr/bin/cronjob_bandit23.sh
+#!/bin/bash
+
+myname=$(whoami)
+mytarget=$(echo I am user $myname | md5sum | cut -d ' ' -f 1)
+
+echo "Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget"
+
+cat /etc/bandit_pass/$myname > /tmp/$mytarget
+bandit22@bandit:/etc/cron.d$ echo I am user bandit23 | md5sum |cut -d ' '
+ -f1
+8ca319486bfbbc3663ea0fbe81326349
+bandit22@bandit:/etc/cron.d$ cat /tmp/8ca319486bfbbc3663ea0fbe81326349
+QYw0Y2aiA672PsMmh9puTQuhoz8SyR2G
+```
