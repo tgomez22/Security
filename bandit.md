@@ -152,6 +152,10 @@ bandit5@bandit:~/inhere/maybehere07$ cat .file2
 P4L4vucdmLnm8I7Vl7jG1ApGSfjYKqJU
 ```
 
+Travis used this command to find the password for the next level
+`ls -Rla | grep 1033`.
+
+
 ## Bandit5
 ```
 Level Goal
