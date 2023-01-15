@@ -337,6 +337,20 @@ closed
 ```
 
 ## Bandit 16
+
+You will need to run the following nmap scan `nmap -Pn -sV -p31000-32000 localhost` to find the correct port number.
+
+The `ssl/unknown` service is the one you are looking for b/c it doesn't echo back your answer.
+```
+PORT      STATE SERVICE     VERSION
+31046/tcp open  echo
+31518/tcp open  ssl/echo
+31691/tcp open  echo
+31790/tcp open  ssl/unknown
+31960/tcp open  echo
+```
+
+You will need to run the command: `openssl s_client -host localhost -port 31790` in order to correctly connect to the service.
 `JQttfApK4SeyHwDlI9SXGR50qclOAil1`
 
 ## Bandit 17
