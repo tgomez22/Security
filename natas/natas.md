@@ -455,7 +455,25 @@ if($key != "") {
 
 `8NEDUUxg8kFgPV84uLwvZkGn6okJQ6aq`
 ## Natas 18
+Weak PHPSESSID cookie with only 641 potential IDs (0-640). Sent HTTP request to Burp Intruder and brute forced the cookie until we got a unique response with the password for the next level.
+```
+<div id="content">
+You are an admin. The credentials for the next level are:<br><pre>Username: natas19
+Password: 8LMJEhKFbMKIL2mxQKjv0aEDdk7zpT0s
+```
 ## Natas 19
+Weak PHPSESSID cookie encoded as HEX in format of ###-admin. Brute force the ### with integers ranging from 0-640 and encode them back as HEX, append them to the hex encoded -admin. 
+```
+<div id="content">
+<p>
+<b>
+This page uses mostly the same code as the previous level, but session IDs are no longer sequential...
+</b>
+</p>
+You are an admin. The credentials for the next level are:<br><pre>Username: natas20
+Password: guVaZ3ET35LbgbFMoaN5tFcYT1jEP7UH
+```
+
 ## Natas 20
 ## Natas 21
 ## Natas 22
